@@ -1,15 +1,47 @@
 import React from 'react';
+import {Pressable} from 'react-native';
 import {useContext} from 'react';
 import {AppContext} from '../../util/context/AppProvider';
-import {SafeAreaView} from 'react-native';
-import S_Text from '../../components/S_Text.js';
+import {View} from 'react-native';
+import Contact from './components/Contact';
+import S_Text from '../../components/S_Text';
+import S_SafeAreaView from '../../components/S_SafeAreaView';
 
-export default Contacts = () => {
+const navigateContactView = ({navigation, contactIndex, contactDetails}) => {
+  navigation.navigate('ContactView', {
+    contactIndex,
+    contactDetails,
+  });
+};
+
+export default Contacts = ({navigation}) => {
   const {contacts} = useContext(AppContext);
 
   return (
-    <SafeAreaView>
-      <S_Text></S_Text>
-    </SafeAreaView>
+    <S_SafeAreaView>
+      {contacts.length > 0 ? (
+        contacts.map((contact, index) => (
+          <Pressable
+            onPress={() =>
+              navigateContactView({
+                navigation,
+                contactIndex: index,
+                original: contact,
+                contactDetails: contact,
+              })
+            }
+            key={'contact' + index}>
+            <Contact name={contact.name} color={contact.color} />
+          </Pressable>
+        ))
+      ) : (
+        <View style={{padding: 48}}>
+          <S_Text textAlign="center" color="secondary">
+            No contacts available. {'\n\n'} To add a new client, press the plus
+            icon at the top right of the screen.
+          </S_Text>
+        </View>
+      )}
+    </S_SafeAreaView>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ContactsStack from './stacks/ContactsStack';
-import CatalogStack from './stacks/CatalogStack';
+import contactsStack from './stacks/ContactsStack';
+import catalogStack from './stacks/CatalogStack';
 import unselected from '../assets/unselected.png';
 import selected from '../assets/selected.png';
 
@@ -19,8 +19,8 @@ export default TabBar = () => {
     keyboardHidesTabBar: false,
   }}>
       <Tab.Screen 
-        name='ContactsStack' 
-        component={ContactsStack}
+        name='contactsStack' 
+        component={contactsStack}
         options={{
           tabBarIcon: ({focused}) => {
             if (focused) {
@@ -30,8 +30,8 @@ export default TabBar = () => {
           }
         }}/>
       <Tab.Screen 
-        name='CatalogStack' 
-        component={CatalogStack}
+        name='catalogStack' 
+        component={catalogStack}
         options={{
           tabBarIcon: ({focused}) => {
             if (focused) {

@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {AppContext} from '../../util/context/AppProvider';
-import {Text, SafeAreaView} from 'react-native';
+import {Text} from 'react-native';
 import Tab_Bar from '../../navigation_drivers/TabBar';
-import english_us from '../../util/language/English';
-import {mock_catalog, mock_contacts} from '../../util/google/Firestore';
-
+import English from '../../util/language/English';
+import {getContacts, mock_group_colors} from '../../util/google/Firestore';
+import S_SafeAreaView from '../../components/S_SafeAreaView';
 
 export default Loading = ({}) => {
   const [loaded, setLoaded] = useState(false);
@@ -16,19 +16,26 @@ export default Loading = ({}) => {
     setGroupColors
   } = useContext(AppContext);
 
-  const getData = () => {
-    setLang(English);
-    setContacts(mock_contacts);
-    setCatalog(mock_catalog);
-    setTheme('dark');
-    setGroupColors([]);
+  const firebaseData = async () => {
+    const firebaseContacts = await getContacts();
+
+    setContacts(firebaseContacts);
   };
 
-  useEffect(() => {
-    getData();
-    setTimeout(() => {
-      setLoaded(true);
-    }, 1000);
+  const asyncData = () => {
+    setLang(English);
+    setCatalog([]);
+    setTheme('dark');
+    setGroupColors(mock_group_colors);
+  }
+
+  useEffect(() => { 
+    asyncData();
+
+    firebaseData()
+    .then(() => {
+      setLoaded(true)
+    })
   }, []);
 
   return (
@@ -36,9 +43,9 @@ export default Loading = ({}) => {
       {loaded ? (
         <Tab_Bar />
       ) : (
-        <SafeAreaView>
+        <S_SafeAreaView>
           <Text>Loading</Text>
-        </SafeAreaView>
+        </S_SafeAreaView>
       )}
     </>
   );

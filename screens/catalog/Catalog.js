@@ -1,12 +1,8 @@
 import React from 'react';
-import { Text, SafeAreaView } from 'react-native';
+import {Text} from 'react-native';
 
 export default Catalog = () => {
   return (
-    <SafeAreaView>
-      <Text>
-        catalog
-      </Text>
-    </SafeAreaView>
-  )
-}
+    <Text>catalog</Text>
+  );
+};

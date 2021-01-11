@@ -10,4 +10,7 @@ export default theme = {
     link: '#248ac9',
     error: '#ff5f5f',
   },
+  fontSize: {
+    md: 18
+  }
 };
