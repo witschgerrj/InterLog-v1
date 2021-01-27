@@ -1,5 +1,7 @@
 import React, {createContext, useState} from 'react';
 import {PixelRatio, Dimensions} from 'react-native';
+import 'react-native-get-random-values';
+import { nanoid } from 'nanoid';
 
 export const AppContext = createContext();
 
@@ -12,6 +14,10 @@ export default AppProvider = ({children}) => {
   const pixelRatio = PixelRatio.getFontScale();
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
+
+  const getUID = () => {
+    return nanoid();
+  }
 
   const app_data = {
     lang,
@@ -27,6 +33,7 @@ export default AppProvider = ({children}) => {
     setCatalog,
     setTheme,
     setGroupColors,
+    getUID
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

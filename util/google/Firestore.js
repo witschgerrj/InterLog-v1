@@ -13,8 +13,13 @@ export const getContacts = async () => {
     .collection('Contacts')
     .get();
     
-  return snapshot.docs.map((doc) => doc.data());
-};
+  return snapshot.docs.map(doc => {
+    return {
+      ...doc.data(),
+      id: doc.id
+    }
+  })
+} 
 
 export const mock_group_colors = [
   '#363636',

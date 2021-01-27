@@ -4,7 +4,7 @@ import React, {
   useState,
   useLayoutEffect,
 } from 'react';
-import {View, Pressable, ScrollView, Image} from 'react-native';
+import {View, Pressable, Image} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import Flex from '../../components/Flex';
 import styled from 'styled-components';
@@ -14,7 +14,6 @@ import ColorPicker from './components/ColorPicker';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
 import NotesPreview from '../../components/NotesPreview';
 import BackIcon from '../../assets/back.png';
-import deepEqual from 'deep-equal';
 
 const ColorIndicator = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -24,8 +23,6 @@ const ColorIndicator = styled.View`
   marginLeft: 16px;
 `;
 
-export const ContactContext = createContext();
-
 export default Contacts = ({navigation, route: {params}}) => {
   const {
     contacts,
@@ -33,6 +30,7 @@ export default Contacts = ({navigation, route: {params}}) => {
     deviceWidth,
     deviceHeight,
     groupColors,
+    getUID
   } = useContext(AppContext);
   const {contactIndex, contact} = params;
 
@@ -56,7 +54,6 @@ export default Contacts = ({navigation, route: {params}}) => {
   };
 
   const validateChanges = () => {
-    //test manually.. why am i not just using contact details from the beginning
     if (color !== contact.color) return true;
     if (name !== contact.name) return true;
     if (email !== contact.email) return true;
@@ -70,16 +67,17 @@ export default Contacts = ({navigation, route: {params}}) => {
     const validate = validateChanges();
 
     if (validate) {
-      const updatedDetails = {
-        color,
-        name,
-        email,
-        phone,
-        notes
-      }
-      //logic for updating contact in firebase
+      // const UID = getUID();
+      // console.log({UID})
+      const editedContact = { color, name, email, phone, notes }
+      //update contact in firebase using the doc id
+      
+      //update contact within context
+      //needs a uid
+      // contacts.splice(contactIndex, 1);
+      // contacts.push(editedContact);
     }
-    navigation.navigate('Contacts');
+    //navigation.navigate('Contacts');
   };
 
   useLayoutEffect(() => {
