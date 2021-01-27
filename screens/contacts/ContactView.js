@@ -34,13 +34,13 @@ export default Contacts = ({navigation, route: {params}}) => {
     deviceHeight,
     groupColors,
   } = useContext(AppContext);
-  const {contactIndex, originalContact} = params;
+  const {contactIndex, contact} = params;
 
-  const [color, setColor] = useState(originalContact.color);
-  const [name, setName] = useState(originalContact.name);
-  const [email, setEmail] = useState(originalContact.email);
-  const [phone, setPhone] = useState(originalContact.phone);
-  const [notes, setNotes] = useState(originalContact.notes);
+  const [color, setColor] = useState(contact.color);
+  const [name, setName] = useState(contact.name);
+  const [email, setEmail] = useState(contact.email);
+  const [phone, setPhone] = useState(contact.phone);
+  const [notes, setNotes] = useState(contact.notes);
   const [showColors, setShowColors] = useState(false);
 
   const PADDING = 16;
@@ -57,11 +57,11 @@ export default Contacts = ({navigation, route: {params}}) => {
 
   const validateChanges = () => {
     //test manually.. why am i not just using contact details from the beginning
-    if (color !== originalContact.color) return true;
-    if (name !== originalContact.name) return true;
-    if (email !== originalContact.email) return true;
-    if (phone !== originalContact.phone) return true;
-    if (notes !== originalContact.notes) return true;
+    if (color !== contact.color) return true;
+    if (name !== contact.name) return true;
+    if (email !== contact.email) return true;
+    if (phone !== contact.phone) return true;
+    if (notes !== contact.notes) return true;
 
     return false;
   };

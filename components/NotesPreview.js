@@ -7,7 +7,7 @@ import {useRoute, useTheme} from '@react-navigation/native';
 export default NotesPreview = ({children, navigation}) => {
   const {colors} = useTheme();
   const {params} = useRoute();
-  const {contactDetails} = params;
+  const {contact} = params;
 
   const PADDING = 16;
 
@@ -20,7 +20,7 @@ export default NotesPreview = ({children, navigation}) => {
           paddingHorizontal: PADDING,
           paddingTop: PADDING,
         }}>
-        <S_Text>{contactDetails.notes}</S_Text>
+        <S_Text>{contact.notes}</S_Text>
       </ScrollView>
       <Pressable onPress={() => navigation.navigate('Notes', {
         ...params

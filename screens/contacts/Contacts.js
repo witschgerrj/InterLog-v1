@@ -7,10 +7,10 @@ import Contact from './components/Contact';
 import S_Text from '../../components/S_Text';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
 
-const navigateContactView = ({navigation, contactIndex , originalContact}) => {
+const navigateContactView = ({navigation, contactIndex , contact}) => {
   navigation.navigate('ContactView', {
     contactIndex,
-    originalContact,
+    contact,
   });
 };
 
@@ -26,7 +26,7 @@ export default Contacts = ({navigation}) => {
               navigateContactView({
                 navigation,
                 contactIndex: index,
-                originalContact: contact,
+                contact,
               })
             }
             key={'contact' + index}>

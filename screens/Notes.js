@@ -7,14 +7,14 @@ import BackIcon from '../assets/back.png';
 
 export default Notes = ({navigation}) => {
   const {params} = useRoute();
-  const {contactDetails} = params;
+  const {contact} = params;
 
-  const [notes, setNotes] = useState(contactDetails.notes);
+  const [notes, setNotes] = useState(contact.notes);
 
   useEffect(() => {
     navigation.setParams({
-      contactDetails: {
-        ...contactDetails,
+      contact: {
+        ...contact,
         notes: notes,
       },
     });
