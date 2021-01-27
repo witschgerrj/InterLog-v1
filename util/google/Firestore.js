@@ -12,7 +12,7 @@ export const getContacts = async () => {
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .get();
-
+    
   return snapshot.docs.map((doc) => doc.data());
 };
 

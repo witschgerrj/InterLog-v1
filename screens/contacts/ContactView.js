@@ -1,4 +1,9 @@
-import React, {useContext, createContext, useState, useLayoutEffect} from 'react';
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useLayoutEffect,
+} from 'react';
 import {View, Pressable, ScrollView, Image} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import Flex from '../../components/Flex';
@@ -9,6 +14,7 @@ import ColorPicker from './components/ColorPicker';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
 import NotesPreview from '../../components/NotesPreview';
 import BackIcon from '../../assets/back.png';
+import deepEqual from 'deep-equal';
 
 const ColorIndicator = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -28,12 +34,13 @@ export default Contacts = ({navigation, route: {params}}) => {
     deviceHeight,
     groupColors,
   } = useContext(AppContext);
-  const {contactIndex, original, contactDetails} = params;
+  const {contactIndex, originalContact} = params;
 
-  const [color, setColor] = useState(contactDetails.color);
-  const [name, setName] = useState(contactDetails.name);
-  const [email, setEmail] = useState(contactDetails.email);
-  const [phone, setPhone] = useState(contactDetails.phone);
+  const [color, setColor] = useState(originalContact.color);
+  const [name, setName] = useState(originalContact.name);
+  const [email, setEmail] = useState(originalContact.email);
+  const [phone, setPhone] = useState(originalContact.phone);
+  const [notes, setNotes] = useState(originalContact.notes);
   const [showColors, setShowColors] = useState(false);
 
   const PADDING = 16;
@@ -49,15 +56,37 @@ export default Contacts = ({navigation, route: {params}}) => {
   };
 
   const validateChanges = () => {
+    //test manually.. why am i not just using contact details from the beginning
+    if (color !== originalContact.color) return true;
+    if (name !== originalContact.name) return true;
+    if (email !== originalContact.email) return true;
+    if (phone !== originalContact.phone) return true;
+    if (notes !== originalContact.notes) return true;
 
-  }
+    return false;
+  };
+
+  const updateAndNavigate = () => {
+    const validate = validateChanges();
+
+    if (validate) {
+      const updatedDetails = {
+        color,
+        name,
+        email,
+        phone,
+        notes
+      }
+      //logic for updating contact in firebase
+    }
+    navigation.navigate('Contacts');
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions(
       {
         headerLeft: () => (
-          <Pressable
-            onPress={() => navigation.navigate('Contacts')}>
+          <Pressable onPress={() => updateAndNavigate()}>
             <Image source={BackIcon} style={{marginLeft: PADDING}} />
           </Pressable>
         ),

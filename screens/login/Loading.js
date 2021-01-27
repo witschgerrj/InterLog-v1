@@ -18,7 +18,7 @@ export default Loading = ({}) => {
 
   const firebaseData = async () => {
     const firebaseContacts = await getContacts();
-
+    console.log({firebaseContacts})
     setContacts(firebaseContacts);
   };
 
