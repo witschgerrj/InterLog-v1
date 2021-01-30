@@ -25,7 +25,7 @@ export default Notes = ({navigation}) => {
       {
         headerLeft: () => (
           <Pressable
-            onPress={() => navigation.navigate('ContactView', {...params})}>
+            onPress={() => navigation.navigate('ViewContact', {...params})}>
             <Image source={BackIcon} style={{marginLeft: PADDING}} />
           </Pressable>
         ),

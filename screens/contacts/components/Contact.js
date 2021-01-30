@@ -1,6 +1,8 @@
 //row for contact
-import React from 'react';
-import {Image} from 'react-native';
+import React, {useContext} from 'react';
+import {AppContext} from '../../../util/context/AppProvider';
+import {useTheme} from '@react-navigation/native';
+import {Image, Pressable} from 'react-native';
 import styled from 'styled-components';
 import S_Text from '../../../components/S_Text';
 import Row from '../../../components/Row';
@@ -16,20 +18,53 @@ const Color = styled.View`
   marginRight: 16px;
 `;
 
-export default Contact = ({name, updated, color}) => {
+export default Contact = (props) => {
+  const {
+    navigation,
+    name,
+    last_updated,
+    color,
+    archiving,
+    contactIndex,
+    contact,
+  } = props;
+  
+  const {formattedTime} = useContext(AppContext);
+
+  const timestamp = formattedTime(last_updated);
+
+  const navigateViewContact = () => {
+    navigation.navigate('ViewContact', {
+      contactIndex,
+      contact,
+    });
+  };
+
   return (
     <Row>
       <Flex justifyContent="space-between">
-        <Flex style={{width: '80%'}}>
-          <Color color={color} />
-          <Flex flexDirection="column">
+        <Pressable onPress={() => navigateViewContact()} style={{flex: 1}}>
+          <Flex>
+            <Color color={color} />
+            <Flex flexDirection="column">
               <S_Text>{name}</S_Text>
-              <Padding pt='10'>
-                <S_Text color='secondary'>{updated}</S_Text>
+              <Padding pt="10">
+                <S_Text color="secondary">{timestamp}</S_Text>
               </Padding>
+            </Flex>
           </Flex>
-        </Flex>
-        <Image source={Info} style={{marginTop: 16}}/>
+        </Pressable>
+        {!archiving ? (
+            <Flex alignItems="center">
+              <Image source={Info}/>
+            </Flex>
+        ) : (
+          <Flex alignItems="center">
+            <S_Text color="error" fontWeight="bold">
+              Archive
+            </S_Text>
+          </Flex>
+        )}
       </Flex>
     </Row>
   );

@@ -6,6 +6,10 @@ const Firebase = firebase.initializeApp(firebase_config);
 const db = firebase.firestore();
 //firebase.analytics();
 
+export const firestoreTimestamp = () => {
+  return firebase.firestore.Timestamp.now().seconds
+}
+
 export const getContacts = async () => {
   const snapshot = await db
     .collection('Users')
@@ -20,6 +24,17 @@ export const getContacts = async () => {
     }
   })
 } 
+
+export const updateContact = (id, contact) => {
+  db.collection('Users')
+  .doc('WNJWWElZUACGPoSc8w6l')
+  .collection('Contacts')
+  .doc(id)
+  .update({
+    ...contact,
+    last_updated: firestoreTimestamp()
+  })
+}
 
 export const mock_group_colors = [
   '#363636',

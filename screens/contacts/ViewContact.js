@@ -26,22 +26,25 @@ const ColorIndicator = styled.View`
 export default Contacts = ({navigation, route: {params}}) => {
   const {
     contacts,
-    setContacts,
+    setContact,
     deviceWidth,
-    deviceHeight,
-    groupColors,
-    getUID
+    updateContact,
   } = useContext(AppContext);
-  const {contactIndex, contact} = params;
+  const {
+    contactIndex,
+    contact,
+    contact: {notes},
+  } = params;
 
+  const [original, setOriginal] = useState(contact);
   const [color, setColor] = useState(contact.color);
   const [name, setName] = useState(contact.name);
   const [email, setEmail] = useState(contact.email);
   const [phone, setPhone] = useState(contact.phone);
-  const [notes, setNotes] = useState(contact.notes);
   const [showColors, setShowColors] = useState(false);
 
   const PADDING = 16;
+  const HEADER_SPACING = 16;
   const ROW_HEIGHT = 80;
   const BOX_SIZE = 64;
   const MARGIN_BOTTOM = 6;
@@ -54,30 +57,31 @@ export default Contacts = ({navigation, route: {params}}) => {
   };
 
   const validateChanges = () => {
-    if (color !== contact.color) return true;
-    if (name !== contact.name) return true;
-    if (email !== contact.email) return true;
-    if (phone !== contact.phone) return true;
-    if (notes !== contact.notes) return true;
+    if (color !== original.color) return true;
+    if (name !== original.name) return true;
+    if (email !== original.email) return true;
+    if (phone !== original.phone) return true;
+    if (notes !== original.notes) return true;
 
     return false;
   };
 
   const updateAndNavigate = () => {
     const validate = validateChanges();
-
     if (validate) {
-      // const UID = getUID();
-      // console.log({UID})
-      const editedContact = { color, name, email, phone, notes }
-      //update contact in firebase using the doc id
+      const id = original.id;
+      const editedContact = {color, name, email, phone, notes};
       
+      //update contact in firebase using the doc id
+      updateContact(id, editedContact);
       //update contact within context
-      //needs a uid
-      // contacts.splice(contactIndex, 1);
-      // contacts.push(editedContact);
+      contacts.splice(contactIndex, 1);
+      contacts.push({...editedContact, id});
+      setContact(contacts);
     }
-    //navigation.navigate('Contacts');
+    navigation.navigate('Contacts', {
+      contacts
+    });
   };
 
   useLayoutEffect(() => {
@@ -85,7 +89,7 @@ export default Contacts = ({navigation, route: {params}}) => {
       {
         headerLeft: () => (
           <Pressable onPress={() => updateAndNavigate()}>
-            <Image source={BackIcon} style={{marginLeft: PADDING}} />
+            <Image source={BackIcon} style={{marginLeft: HEADER_SPACING}} />
           </Pressable>
         ),
       },

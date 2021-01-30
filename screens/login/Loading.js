@@ -10,7 +10,7 @@ export default Loading = ({}) => {
   const [loaded, setLoaded] = useState(false);
   const {
     setLang,
-    setContacts,
+    setContact,
     setCatalog,
     setTheme,
     setGroupColors
@@ -18,8 +18,7 @@ export default Loading = ({}) => {
 
   const firebaseData = async () => {
     const firebaseContacts = await getContacts();
-    console.log({firebaseContacts})
-    setContacts(firebaseContacts);
+    setContact(firebaseContacts);
   };
 
   const asyncData = () => {
