@@ -1,4 +1,4 @@
-export default English = {
+export default en_US = {
   LOG_IN: {
     GET_STARTED: 'Get Started',
     LOG_IN: 'Log In',

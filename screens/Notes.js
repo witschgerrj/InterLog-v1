@@ -7,7 +7,7 @@ import BackIcon from '../assets/back.png';
 
 export default Notes = ({navigation}) => {
   const {params} = useRoute();
-  const {contact, item} = params;
+  const {contact, item, fromScreen} = params;
 
   const PADDING = 16;
 
@@ -18,22 +18,12 @@ export default Notes = ({navigation}) => {
   const [notes, setNotes] = useState(activeNotes());
 
   const navigateBack = () => {
-    if (contact) {
-      return (
-          <Pressable
-            onPress={() => navigation.navigate('ViewContact', {...params})}>
-            <Image source={BackIcon} style={{marginLeft: PADDING}} />
-          </Pressable>
-      )
-    }
-    if (item) {
-      return (
-          <Pressable
-            onPress={() => navigation.navigate('ViewItem', {...params})}>
-            <Image source={BackIcon} style={{marginLeft: PADDING}} />
-          </Pressable>
-      )
-    }
+    return (
+      <Pressable
+        onPress={() => navigation.navigate(fromScreen, {...params})}>
+        <Image source={BackIcon} style={{marginLeft: PADDING}} />
+      </Pressable>
+    )
   }
 
   const updateNotes = () => {

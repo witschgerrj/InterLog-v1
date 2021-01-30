@@ -5,7 +5,7 @@ import NotesIcon from '../assets/write-notes.png';
 import {useRoute, useTheme} from '@react-navigation/native';
 
 export default NotesPreview = (props) => {
-  const {children, navigation, contact, item} = props;
+  const {children, navigation, fromScreen, contact, item} = props;
   const {colors} = useTheme();
   const {params} = useRoute();
 
@@ -44,7 +44,9 @@ export default NotesPreview = (props) => {
         onPress={() =>
           navigation.navigate('Notes', {
             ...params,
-            ...props,
+            fromScreen,
+            contact,
+            item
           })
         }>
         <Image

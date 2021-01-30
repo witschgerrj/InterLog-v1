@@ -19,7 +19,7 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {setContact, contacts, getUID, deviceWidth} = useContext(AppContext);
+  const {setContact, contacts, getUID, createContact, deviceWidth} = useContext(AppContext);
   const {
     contact,
     contact: {notes},
@@ -42,18 +42,17 @@ export default Contacts = ({navigation, route: {params}}) => {
     if (showColors) {
       setShowColors(false);
     }
-  };
-
+  }
   const validateContact = () => {
     if (name !== '') return true;
     if (email !== '') return true;
     if (phone !== '') return true;
-
     return false;
   };
 
   const createAndNavigate = () => {
     const validate = validateContact();
+  
     if (validate) {
       const id = getUID();
       const newContact = {color, name, email, phone, notes};
@@ -141,6 +140,7 @@ export default Contacts = ({navigation, route: {params}}) => {
       </View>
       <NotesPreview
         navigation={navigation}
+        fromScreen='NewContact'
         contact={{color, name, email, phone, notes}}>
         {showColors ? (
           <ColorPicker

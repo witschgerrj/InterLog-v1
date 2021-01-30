@@ -1,6 +1,6 @@
 import React, {createContext, useState} from 'react';
 import {PixelRatio, Dimensions} from 'react-native';
-import {updateContact, firestoreTimestamp} from '../google/Firestore';
+import {updateContact, createContact, firestoreTimestamp} from '../google/Firestore';
 import 'react-native-get-random-values';
 import {nanoid} from 'nanoid';
 
@@ -75,7 +75,8 @@ export default AppProvider = ({children}) => {
     setGroupColors,
     getUID,
     updateContact,
-    formattedTime
+    formattedTime,
+    createContact
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

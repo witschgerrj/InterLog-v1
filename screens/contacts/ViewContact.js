@@ -146,7 +146,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           onFocus={() => hideColors()}
         />
       </View>
-      <NotesPreview navigation={navigation} contact={contact}>
+      <NotesPreview navigation={navigation} contact={contact} fromScreen='ViewContact'>
         {showColors ? (
           <ColorPicker
             setColor={setColor}

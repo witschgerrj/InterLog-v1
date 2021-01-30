@@ -32,6 +32,7 @@ export default Contacts = ({navigation, route: {params}}) => {
               alignItems="center"
               justifyContent="space-between"
               style={{width: 80, marginRight: HEADER_SPACING}}>
+              <HeaderIcon icon={Delete} onPress={() => setArchiving(true)} />
               <HeaderIcon
                 icon={Add}
                 onPress={() =>
@@ -40,7 +41,6 @@ export default Contacts = ({navigation, route: {params}}) => {
                   })
                 }
               />
-              <HeaderIcon icon={Delete} onPress={() => setArchiving(true)} />
             </Flex>
           ) : (
             <Pressable onPress={() => setArchiving(false)}>

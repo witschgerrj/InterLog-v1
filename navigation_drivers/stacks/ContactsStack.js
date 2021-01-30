@@ -21,6 +21,7 @@ export default contacts_stack = () => {
           fontSize: 22,
         },
         headerBackTitleVisible: false,
+        headerLeft: null
       }}>
       <Stack.Screen 
         name='Contacts'
