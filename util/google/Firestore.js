@@ -7,8 +7,8 @@ const db = firebase.firestore();
 //firebase.analytics();
 
 export const firestoreTimestamp = () => {
-  return firebase.firestore.Timestamp.now().seconds
-}
+  return firebase.firestore.Timestamp.now().seconds;
+};
 
 export const getContacts = async () => {
   const snapshot = await db
@@ -16,25 +16,36 @@ export const getContacts = async () => {
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .get();
-    
-  return snapshot.docs.map(doc => {
+
+  return snapshot.docs.map((doc) => {
     return {
       ...doc.data(),
-      id: doc.id
-    }
-  })
-} 
+      id: doc.id,
+    };
+  });
+};
 
 export const updateContact = (id, contact) => {
   db.collection('Users')
-  .doc('WNJWWElZUACGPoSc8w6l')
-  .collection('Contacts')
-  .doc(id)
-  .update({
-    ...contact,
-    last_updated: firestoreTimestamp()
-  })
-}
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .update({
+      ...contact,
+      last_updated: firestoreTimestamp(),
+    });
+};
+
+export const createContact = (id, contact) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .set({
+      ...contact,
+      last_updated: firestoreTimestamp(),
+    });
+};
 
 export const mock_group_colors = [
   '#363636',

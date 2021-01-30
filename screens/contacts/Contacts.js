@@ -13,6 +13,13 @@ export default Contacts = ({navigation, route: {params}}) => {
   const {contacts} = params;
 
   const [archiving, setArchiving] = useState(false);
+  const defaultContact = {
+    name: '',
+    phone: '',
+    email: '',
+    notes: '',
+    color: '#363636',
+  };
 
   const HEADER_SPACING = 16;
 
@@ -25,8 +32,15 @@ export default Contacts = ({navigation, route: {params}}) => {
               alignItems="center"
               justifyContent="space-between"
               style={{width: 80, marginRight: HEADER_SPACING}}>
-              <HeaderIcon icon={Add} onPress={() => navigation.navigate('NewContact')}/>
-              <HeaderIcon icon={Delete} onPress={() => setArchiving(true)}/>
+              <HeaderIcon
+                icon={Add}
+                onPress={() =>
+                  navigation.navigate('NewContact', {
+                    contact: defaultContact,
+                  })
+                }
+              />
+              <HeaderIcon icon={Delete} onPress={() => setArchiving(true)} />
             </Flex>
           ) : (
             <Pressable onPress={() => setArchiving(false)}>

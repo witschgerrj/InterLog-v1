@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  createContext,
-  useState,
-  useLayoutEffect,
-} from 'react';
+import React, {useContext, useState, useLayoutEffect} from 'react';
 import {View, Pressable, Image} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import Flex from '../../components/Flex';
@@ -24,23 +19,20 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {
-    contacts,
-    setContact,
-    deviceWidth,
-    updateContact,
-  } = useContext(AppContext);
+  const {contacts, setContact, deviceWidth, updateContact} = useContext(
+    AppContext,
+  );
   const {
     contactIndex,
     contact,
     contact: {notes},
   } = params;
 
-  const [original, setOriginal] = useState(contact);
-  const [color, setColor] = useState(contact.color);
   const [name, setName] = useState(contact.name);
   const [email, setEmail] = useState(contact.email);
   const [phone, setPhone] = useState(contact.phone);
+  const [color, setColor] = useState(contact.color);
+  const [original, setOriginal] = useState(contact);
   const [showColors, setShowColors] = useState(false);
 
   const PADDING = 16;
@@ -71,7 +63,7 @@ export default Contacts = ({navigation, route: {params}}) => {
     if (validate) {
       const id = original.id;
       const editedContact = {color, name, email, phone, notes};
-      
+
       //update contact in firebase using the doc id
       updateContact(id, editedContact);
       //update contact within context
@@ -80,7 +72,7 @@ export default Contacts = ({navigation, route: {params}}) => {
       setContact(contacts);
     }
     navigation.navigate('Contacts', {
-      contacts
+      contacts,
     });
   };
 
@@ -110,7 +102,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           </S_Text>
           <Input
             value={name}
-            placeholder="First Last"
+            placeholder="First and Last"
             onChange={setName}
             style={{width: nameWidth}}
             maxLength={50}
@@ -154,7 +146,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           onFocus={() => hideColors()}
         />
       </View>
-      <NotesPreview navigation={navigation}>
+      <NotesPreview navigation={navigation} contact={contact}>
         {showColors ? (
           <ColorPicker
             setColor={setColor}
