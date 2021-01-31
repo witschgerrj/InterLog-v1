@@ -6,6 +6,8 @@ import Contacts from '../../screens/contacts/Contacts';
 import ViewContact from '../../screens/contacts/ViewContact';
 import NewContact from '../../screens/contacts/NewContact';
 import Notes from '../../screens/Notes';
+import Settings from '../../screens/settings/Settings';
+import ContactArchive from '../../screens/settings/ContactArchive';
 
 const Stack = createStackNavigator();
 
@@ -21,13 +23,12 @@ export default contacts_stack = () => {
           fontSize: 22,
         },
         headerBackTitleVisible: false,
-        headerLeft: null
+        headerLeft: null,
       }}>
       <Stack.Screen 
         name='Contacts'
         component={Contacts}
-        initialParams={{contacts}}
-        options={{title: 'Contacts'}}/>
+        initialParams={{contacts}}/>
       <Stack.Screen 
         name='ViewContact'
         component={ViewContact}
@@ -38,8 +39,14 @@ export default contacts_stack = () => {
         options={{title: 'New Contact'}}/>
       <Stack.Screen 
         name='Notes'
-        component={Notes}
-        options={{title: 'Notes'}}/>
+        component={Notes}/>
+      <Stack.Screen 
+        name='Settings'
+        component={Settings}/>
+      <Stack.Screen 
+        name='ContactArchive'
+        component={ContactArchive}
+        options={{title: 'Contact Archive'}}/>
     </Stack.Navigator>
   );
 }

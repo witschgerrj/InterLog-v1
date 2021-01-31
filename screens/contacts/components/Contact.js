@@ -1,7 +1,6 @@
 //row for contact
 import React, {useContext} from 'react';
 import {AppContext} from '../../../util/context/AppProvider';
-import {useTheme} from '@react-navigation/native';
 import {Image, Pressable} from 'react-native';
 import styled from 'styled-components';
 import S_Text from '../../../components/S_Text';
@@ -21,13 +20,13 @@ const Color = styled.View`
 export default Contact = (props) => {
   const {
     navigation,
-    name,
-    last_updated,
-    color,
     archiving,
     contactIndex,
+    archiveContact,
     contact,
   } = props;
+
+  const { name, last_updated, color } = contact;
   
   const {formattedTime} = useContext(AppContext);
 
@@ -55,15 +54,17 @@ export default Contact = (props) => {
           </Flex>
         </Pressable>
         {!archiving ? (
-            <Flex alignItems="center">
-              <Image source={Info}/>
-            </Flex>
-        ) : (
           <Flex alignItems="center">
-            <S_Text color="error" fontWeight="bold">
-              Archive
-            </S_Text>
+            <Image source={Info}/>
           </Flex>
+        ) : (
+          <Pressable onPress={() => archiveContact(contact, contactIndex)}>
+            <Flex alignItems="center" style={{height: '100%'}}>
+              <S_Text color="error" fontWeight="bold">
+                Archive
+              </S_Text>
+            </Flex>
+          </Pressable>
         )}
       </Flex>
     </Row>

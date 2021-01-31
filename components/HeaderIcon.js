@@ -1,18 +1,16 @@
 //row for contact
 import React from 'react';
-import { Image, Pressable } from 'react-native';
+import {Image, Pressable} from 'react-native';
 import Flex from './Flex';
 
-export default HeaderIcon = ({
-  onPress,
-  icon,
-  style,
-  children,
-}) => {
+export default HeaderIcon = ({onPress, source, style}) => {
   return (
     <Pressable onPress={() => onPress()}>
-      <Flex justifyContent='space-evenly' alignItems='center' style={{height: '100%'}}>
-        <Image source={icon}/>
+      <Flex
+        justifyContent="space-evenly"
+        alignItems="center"
+        style={{height: '100%', ...style}}>
+        <Image source={source} />
       </Flex>
     </Pressable>
   );
@@ -20,4 +18,4 @@ export default HeaderIcon = ({
 
 HeaderIcon.defaultProps = {
   onPress: () => {},
-}
+};

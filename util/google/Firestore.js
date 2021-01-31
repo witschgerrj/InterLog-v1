@@ -6,11 +6,37 @@ const Firebase = firebase.initializeApp(firebase_config);
 const db = firebase.firestore();
 //firebase.analytics();
 
-export const firestoreTimestamp = () => {
+export const FB_timestamp = () => {
   return firebase.firestore.Timestamp.now().seconds;
 };
 
-export const getContacts = async () => {
+export const FB_getContactArchive = async () => {
+  const snapshot = await db
+    .collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .get();
+
+  return snapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
+};
+
+export const FB_archiveContact = (id, contact) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .doc(id)
+    .set({
+      ...contact,
+      last_updated: FB_timestamp(),
+    });
+};
+
+export const FB_getContacts = async () => {
   const snapshot = await db
     .collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
@@ -25,26 +51,34 @@ export const getContacts = async () => {
   });
 };
 
-export const updateContact = (id, contact) => {
+export const FB_updateContact = (id, contact) => {
   db.collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .doc(id)
     .update({
       ...contact,
-      last_updated: firestoreTimestamp(),
+      last_updated: FB_timestamp(),
     });
 };
 
-export const createContact = (id, contact) => {
+export const FB_createContact = (id, contact) => {
   db.collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .doc(id)
     .set({
       ...contact,
-      last_updated: firestoreTimestamp(),
+      last_updated: FB_timestamp(),
     });
+};
+
+export const FB_deleteContact = (id) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .delete();
 };
 
 export const mock_group_colors = [

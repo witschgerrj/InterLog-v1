@@ -62,7 +62,7 @@ export default Notes = ({navigation}) => {
 
   return (
     <ScrollView style={{flex: 1, padding: PADDING}}>
-      <Input value={notes} onChange={setNotes} multiline />
+      <Input value={notes} onChange={setNotes} multiline style={{ minHeight: '100%' }}/>
     </ScrollView>
   );
 };

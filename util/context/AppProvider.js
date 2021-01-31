@@ -1,6 +1,12 @@
 import React, {createContext, useState} from 'react';
 import {PixelRatio, Dimensions} from 'react-native';
-import {updateContact, createContact, firestoreTimestamp} from '../google/Firestore';
+import {
+  FB_updateContact,
+  FB_createContact,
+  FB_timestamp,
+  FB_archiveContact,
+  FB_deleteContact,
+} from '../google/Firestore';
 import 'react-native-get-random-values';
 import {nanoid} from 'nanoid';
 
@@ -12,6 +18,7 @@ export default AppProvider = ({children}) => {
   const [theme, setTheme] = useState(null);
   const [groupColors, setGroupColors] = useState([]);
   const [lang, setLang] = useState(null);
+  const [contactArchive, setContactArchive] = useState([]);
   const pixelRatio = PixelRatio.getFontScale();
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
@@ -20,7 +27,7 @@ export default AppProvider = ({children}) => {
     return nanoid();
   };
 
-  const setContact = (contacts) => {
+  const updateContacts = (contacts) => {
     contacts.sort((a, b) =>
       a.color > b.color
         ? 1
@@ -34,8 +41,8 @@ export default AppProvider = ({children}) => {
   };
 
   const formattedTime = (seconds) => {
-    seconds = firestoreTimestamp() - seconds
-    
+    seconds = FB_timestamp() - seconds;
+
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
@@ -68,15 +75,19 @@ export default AppProvider = ({children}) => {
     pixelRatio,
     deviceWidth,
     deviceHeight,
+    contactArchive,
     setLang,
-    setContact,
+    updateContacts,
     setCatalog,
     setTheme,
     setGroupColors,
+    setContactArchive,
     getUID,
-    updateContact,
     formattedTime,
-    createContact
+    FB_updateContact,
+    FB_createContact,
+    FB_archiveContact,
+    FB_deleteContact,
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

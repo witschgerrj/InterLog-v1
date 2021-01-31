@@ -19,7 +19,7 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {contacts, setContact, deviceWidth, updateContact} = useContext(
+  const {contacts, updateContacts, deviceWidth, FB_updateContact} = useContext(
     AppContext,
   );
   const {
@@ -65,11 +65,11 @@ export default Contacts = ({navigation, route: {params}}) => {
       const editedContact = {color, name, email, phone, notes};
 
       //update contact in firebase using the doc id
-      updateContact(id, editedContact);
+      FB_updateContact(id, editedContact);
       //update contact within context
       contacts.splice(contactIndex, 1);
       contacts.push({...editedContact, id});
-      setContact(contacts);
+      updateContacts(contacts);
     }
     navigation.navigate('Contacts', {
       contacts,
@@ -103,6 +103,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           <Input
             value={name}
             placeholder="First and Last"
+            autoCapitalize='words'
             onChange={setName}
             style={{width: nameWidth}}
             maxLength={50}

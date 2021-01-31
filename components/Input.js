@@ -9,7 +9,8 @@ export default Input = ({
   style,
   maxLength,
   multiline,
-  onFocus
+  onFocus,
+  autoCapitalize
 }) => {
   const {colors, fontSize} = useTheme();
 
@@ -27,10 +28,14 @@ export default Input = ({
       maxLength={maxLength}
       multiline={multiline}
       onFocus={onFocus}
+      autoCorrect={false} 
+      spellCheck={false}
+      autoCapitalize={autoCapitalize}
     />
   );
 };
 
 Input.defaultProps = {
   multiline: false,
+  autoCapitalize: 'none',
 }

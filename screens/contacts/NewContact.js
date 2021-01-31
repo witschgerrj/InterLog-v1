@@ -19,7 +19,9 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {setContact, contacts, getUID, createContact, deviceWidth} = useContext(AppContext);
+  const {updateContacts, contacts, getUID, FB_createContact, deviceWidth} = useContext(
+    AppContext,
+  );
   const {
     contact,
     contact: {notes},
@@ -42,7 +44,7 @@ export default Contacts = ({navigation, route: {params}}) => {
     if (showColors) {
       setShowColors(false);
     }
-  }
+  };
   const validateContact = () => {
     if (name !== '') return true;
     if (email !== '') return true;
@@ -52,16 +54,16 @@ export default Contacts = ({navigation, route: {params}}) => {
 
   const createAndNavigate = () => {
     const validate = validateContact();
-  
+
     if (validate) {
       const id = getUID();
       const newContact = {color, name, email, phone, notes};
 
       //update contact in firebase using the doc id
-      createContact(id, newContact);
+      FB_createContact(id, newContact);
       //update contact within context
       contacts.push({...newContact, id});
-      setContact(contacts);
+      updateContacts(contacts);
     }
     navigation.navigate('Contacts', {
       contacts,
@@ -72,10 +74,23 @@ export default Contacts = ({navigation, route: {params}}) => {
     navigation.setOptions(
       {
         headerLeft: () => (
-          <Pressable onPress={() => createAndNavigate()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <Image source={BackIcon} style={{marginLeft: HEADER_SPACING}} />
           </Pressable>
         ),
+        headerRight: () =>
+          validateContact() && (
+            <Pressable onPress={() => createAndNavigate()}>
+              <S_Text
+                color="link"
+                style={{
+                  marginRight: HEADER_SPACING,
+                  fontWeight: 'bold',
+                }}>
+                Save
+              </S_Text>
+            </Pressable>
+          ),
       },
       [navigation],
     );
@@ -95,6 +110,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           <Input
             value={name}
             placeholder="First and Last"
+            autoCapitalize='words'
             onChange={setName}
             style={{width: nameWidth}}
             maxLength={50}
@@ -140,7 +156,7 @@ export default Contacts = ({navigation, route: {params}}) => {
       </View>
       <NotesPreview
         navigation={navigation}
-        fromScreen='NewContact'
+        fromScreen="NewContact"
         contact={{color, name, email, phone, notes}}>
         {showColors ? (
           <ColorPicker
