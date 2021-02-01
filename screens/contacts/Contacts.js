@@ -33,14 +33,12 @@ export default Contacts = ({navigation}) => {
   const HEADER_SPACING = 16;
 
   const archiveContact = (contact, index) => {
-    const id = contact.id;
-    delete contact.id;
-    contact.color = '#363636';
+    //creating copies to dereference
+    let contactCopy = {...contact};
+    const id = contactCopy.id;
+    contactCopy.color = '#363636';
 
-    FB_archiveContact(id, contact);
-    FB_deleteContact(id);
-
-    let contactArchiveCopy = [...contactArchive, contact];
+    let contactArchiveCopy = [...contactArchive, contactCopy];
     setContactArchive(contactArchiveCopy);
 
     let contactsCopy = [...contacts];
@@ -50,6 +48,11 @@ export default Contacts = ({navigation}) => {
     navigation.setParams({
       contacts: contactsCopy
     });
+
+    let FB_contactCopy = {...contactCopy};
+    delete FB_contactCopy.id;
+    FB_archiveContact(id, contact);
+    FB_deleteContact(id);
   };
 
   useLayoutEffect(() => {

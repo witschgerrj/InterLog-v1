@@ -1,15 +1,16 @@
 //row for contact
-import React, {useEffect, useState, useLayoutEffect, useContext} from 'react';
-import {ActionSheetIOS, ScrollView, Image, Pressable} from 'react-native';
+import React, {useState, useLayoutEffect, useContext} from 'react';
+import {ActionSheetIOS, Image, Pressable} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components';
 import Row from '../../components/Row';
 import Flex from '../../components/Flex';
 import S_Text from '../../components/S_Text';
+import HeaderIcon from '../../components/HeaderIcon';
 import Download from '../../assets/download.png';
 import BackIcon from '../../assets/back.png';
-import { FB_createContact } from '../../util/google/Firestore';
+import Delete from '../../assets/delete.png';
 
 const Color = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -27,7 +28,7 @@ export default ContactArchive = ({navigation}) => {
     updateContacts,
     formattedTime,
     FB_deleteContactFromArchive,
-    FB_createContact
+    FB_createContact,
   } = useContext(AppContext);
 
   const [deleting, setDeleting] = useState(false);
@@ -43,7 +44,9 @@ export default ContactArchive = ({navigation}) => {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
+          //creating copies to dereference
           const id = contact.id;
+
           FB_deleteContactFromArchive(id);
           FB_createContact(id, contact);
 
@@ -58,13 +61,40 @@ export default ContactArchive = ({navigation}) => {
     );
   };
 
+  const confirmDelete = (id, index) => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Delete', 'Cancel'],
+        destructiveButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          FB_deleteContactFromArchive(id);
+
+          let contactArchiveCopy = [...contactArchive];
+          contactArchiveCopy.splice(index, 1);
+          setContactArchive(contactArchiveCopy);
+        }
+      },
+    );
+  }
+
   useLayoutEffect(() => {
     navigation.setOptions(
       {
         headerLeft: () => (
-          <Pressable onPress={() => navigation.goBack()}>
-            <Image source={BackIcon} style={{marginLeft: HEADER_SPACING}} />
-          </Pressable>
+          <HeaderIcon
+            source={BackIcon}
+            style={{marginLeft: HEADER_SPACING}}
+            onPress={() => navigation.goBack()}
+          />
+        ),
+        headerRight: () => (
+          <HeaderIcon
+            source={Delete}
+            style={{marginRight: HEADER_SPACING}}
+            onPress={() => setDeleting(!deleting)}
+          />
         ),
       },
       [navigation],
@@ -72,7 +102,7 @@ export default ContactArchive = ({navigation}) => {
   });
 
   return contactArchive.map((contact, index) => {
-    const {name, last_updated, color} = contact;
+    const {name, last_updated, color, id} = contact;
     const timestamp = formattedTime(last_updated);
     return (
       <Pressable onPress={() => {}} key={'archiveContact' + index}>
@@ -98,7 +128,7 @@ export default ContactArchive = ({navigation}) => {
                   style={{tintColor: colors.text}}></Image>
               </Flex>
             ) : (
-              <Pressable onPress={() => {}}>
+              <Pressable onPress={() => confirmDelete(id, index)}>
                 <Flex alignItems="center" style={{height: '100%'}}>
                   <S_Text color="error" fontWeight="bold">
                     Delete
