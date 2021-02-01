@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState, useContext} from 'react';
+import React, {useLayoutEffect, useState, useContext, useEffect} from 'react';
 import {View, Image, Pressable} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import Contact from './components/Contact';
@@ -10,14 +10,14 @@ import Add from '../../assets/add.png';
 import Delete from '../../assets/delete.png';
 import Cog from '../../assets/cog.png';
 
-export default Contacts = ({navigation, route: {params}}) => {
-  const {contacts} = params;
+export default Contacts = ({navigation}) => {
   const {
     FB_archiveContact,
     FB_deleteContact,
     updateContacts,
     setContactArchive,
     contactArchive,
+    contacts
   } = useContext(AppContext);
 
   const [archiving, setArchiving] = useState(false);
@@ -32,21 +32,23 @@ export default Contacts = ({navigation, route: {params}}) => {
 
   const HEADER_SPACING = 16;
 
-  const archiveContact = (contact, contactIndex) => {
+  const archiveContact = (contact, index) => {
     const id = contact.id;
     delete contact.id;
+    contact.color = '#363636';
 
     FB_archiveContact(id, contact);
     FB_deleteContact(id);
 
-    contactArchive.push(contact);
-    setContactArchive(contactArchive);
+    let contactArchiveCopy = [...contactArchive, contact];
+    setContactArchive(contactArchiveCopy);
 
-    contacts.splice(contactIndex, 1);
-    updateContacts(contacts);
+    let contactsCopy = [...contacts];
+    contactsCopy.splice(index, 1);
+    updateContacts(contactsCopy);
 
     navigation.setParams({
-      contacts: contacts
+      contacts: contactsCopy
     });
   };
 

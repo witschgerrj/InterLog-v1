@@ -27,8 +27,7 @@ export default contacts_stack = () => {
       }}>
       <Stack.Screen 
         name='Contacts'
-        component={Contacts}
-        initialParams={{contacts}}/>
+        component={Contacts}/>
       <Stack.Screen 
         name='ViewContact'
         component={ViewContact}

@@ -36,6 +36,14 @@ export const FB_archiveContact = (id, contact) => {
     });
 };
 
+export const FB_deleteContactFromArchive = (id) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .doc(id)
+    .delete();
+};
+
 export const FB_getContacts = async () => {
   const snapshot = await db
     .collection('Users')

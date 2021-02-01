@@ -12,11 +12,10 @@ export default RenderFlow = () => {
   }, []);
 
   return (
+    <AppProvider>
       <NavigationContainer theme={dark}>
         {isLoggedIn ? (
-          <AppProvider>
             <Loading />
-          </AppProvider>
         ) : (
           <>
             {
@@ -25,5 +24,6 @@ export default RenderFlow = () => {
           </>
         )}
       </NavigationContainer>
+    </AppProvider>
   );
 };

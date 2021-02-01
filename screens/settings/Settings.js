@@ -1,12 +1,12 @@
 //row for contact
-import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {ScrollView, Image, Pressable} from 'react-native';
+import React, {useLayoutEffect} from 'react';
+import {Image, Pressable} from 'react-native';
 import Row from '../../components/Row';
 import Flex from '../../components/Flex';
 import S_Text from '../../components/S_Text';
 import BackIcon from '../../assets/back.png';
 
-export default Settings = ({navigation}) => {
+export default Settings = ({navigation, route: {params}}) => {
   const HEADER_SPACING = 16;
 
   const options = [
