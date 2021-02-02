@@ -77,7 +77,7 @@ export default ContactArchive = ({navigation}) => {
         }
       },
     );
-  }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -89,13 +89,25 @@ export default ContactArchive = ({navigation}) => {
             onPress={() => navigation.goBack()}
           />
         ),
-        headerRight: () => (
-          <HeaderIcon
-            source={Delete}
-            style={{marginRight: HEADER_SPACING}}
-            onPress={() => setDeleting(!deleting)}
-          />
-        ),
+        headerRight: () =>
+          !deleting ? (
+            <HeaderIcon
+              source={Delete}
+              style={{marginRight: HEADER_SPACING}}
+              onPress={() => setDeleting(!deleting)}
+            />
+          ) : (
+            <Pressable onPress={() => setDeleting(false)}>
+              <S_Text
+                color="link"
+                style={{
+                  marginRight: HEADER_SPACING,
+                  fontWeight: 'bold',
+                }}>
+                Done
+              </S_Text>
+            </Pressable>
+          ),
       },
       [navigation],
     );
