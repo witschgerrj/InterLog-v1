@@ -62,7 +62,6 @@ export default Contacts = ({navigation, route: {params}}) => {
     const validate = validateChanges();
     if (validate) {
       //creating copies to dereference
-
       const id = original.id;
       const editedContact = {color, name, email, phone, notes};
 
