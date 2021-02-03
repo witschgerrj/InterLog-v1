@@ -4,6 +4,7 @@ import {AppContext} from '../../util/context/AppProvider';
 import styled from 'styled-components';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
 import S_Text from '../../components/S_Text';
+import Input from '../../components/Input';
 import Flex from '../../components/Flex';
 import Back from '../../assets/back.png';
 import Delete from '../../assets/delete.png';
@@ -18,8 +19,7 @@ const Color = styled.View`
 `;
 
 export default ContactColors = ({navigation}) => {
-
-  const {contactColors} = useContext(AppContext)
+  const {contactColors} = useContext(AppContext);
 
   const HEADER_SPACING = 16;
 
@@ -41,11 +41,8 @@ export default ContactColors = ({navigation}) => {
               alignItems="center"
               justifyContent="space-between"
               style={{width: 80, marginRight: HEADER_SPACING}}>
-              <HeaderIcon source={Delete} onPress={() => setDeleting(true)}/>
-              <HeaderIcon
-                source={Add}
-                onPress={() => {}}
-              />
+              <HeaderIcon source={Delete} onPress={() => setDeleting(true)} />
+              <HeaderIcon source={Add} onPress={() => {}} />
             </Flex>
           ) : (
             <Pressable onPress={() => setDeleting(false)}>
@@ -66,16 +63,47 @@ export default ContactColors = ({navigation}) => {
 
   return (
     <S_SafeAreaView>
-      {
-        contactColors.map((color, index) => (
-          <Row>
-            <Flex alignItems='center'>
-              <Color color={color} key={'color'+index}/>
-              <S_Text>{color}</S_Text>
-            </Flex>
-          </Row>
-        ))
-      }
+      {contactColors.map((color, index) => (
+        <ColorRow
+          color={color}
+          index={index}
+          deleting={deleting}
+          key={'colorRow' + index}
+        />
+      ))}
     </S_SafeAreaView>
-  )
-}
+  );
+};
+
+const ColorRow = ({color, index, deleting}) => {
+  const [colorOption, setColorOption] = useState(color.substring(1));
+
+  const validateColor = (option) => {
+    const hex = `#${option}`;
+    const regex = /^#([0-9A-F]{3}){1,2}$/i;
+
+    if (regex.test(hex)) {
+      return hex;
+    }
+    return '#363636';
+  };
+
+  return (
+    <Row>
+      <Flex alignItems="center">
+        <Color color={validateColor(colorOption)} key={'color' + index} />
+        <S_Text>#</S_Text>
+        <Flex justifyContent="space-between" style={{flex: 1}}>
+          <Input
+            value={colorOption}
+            autoCapitalize='characters'
+            maxLength={6}
+            onChange={setColorOption}
+            style={{flex: 1, height: '100%'}}
+          />
+          {deleting && <S_Text color="error">Delete</S_Text>}
+        </Flex>
+      </Flex>
+    </Row>
+  );
+};
