@@ -9,6 +9,7 @@ import Flex from '../../components/Flex';
 import Back from '../../assets/back.png';
 import Delete from '../../assets/delete.png';
 import Add from '../../assets/add.png';
+import deepEqual from 'deep-equal';
 
 const Color = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -19,11 +20,26 @@ const Color = styled.View`
 `;
 
 export default ContactColors = ({navigation}) => {
-  const {contactColors} = useContext(AppContext);
-
+  const {contactColors, setContactColors, FB_updateContactColors} = useContext(AppContext);
+  //using a second contactColors state for all the new changes and then can compare with the original.
+  const [updatedContactColors, setUpdatedContactColors] = useState([...contactColors]);
+  const [deleting, setDeleting] = useState(false);
+  
   const HEADER_SPACING = 16;
 
-  const [deleting, setDeleting] = useState(false);
+  const addNewContactColor = (color, index) => {
+    let copyUpdatedContactColors = [...updatedContactColors];
+    copyUpdatedContactColors[index] = color;
+    setUpdatedContactColors(copyUpdatedContactColors);
+  }
+
+  const updateColorsAndGoBack = () => {
+    if (!deepEqual(contactColors, updatedContactColors)) {
+      setContactColors(updatedContactColors);
+      FB_updateContactColors(updatedContactColors);
+    }
+    navigation.goBack();
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -32,7 +48,7 @@ export default ContactColors = ({navigation}) => {
           <HeaderIcon
             source={Back}
             style={{marginLeft: HEADER_SPACING}}
-            onPress={() => navigation.goBack()}
+            onPress={() => updateColorsAndGoBack()}
           />
         ),
         headerRight: () =>
@@ -63,42 +79,52 @@ export default ContactColors = ({navigation}) => {
 
   return (
     <S_SafeAreaView>
-      {contactColors.map((color, index) => (
+      {updatedContactColors.map((color, index) => (
         <ColorRow
           color={color}
           index={index}
           deleting={deleting}
           key={'colorRow' + index}
+          addNewContactColor={addNewContactColor}
         />
       ))}
     </S_SafeAreaView>
   );
 };
 
-const ColorRow = ({color, index, deleting}) => {
-  const [colorOption, setColorOption] = useState(color.substring(1));
+const ColorRow = ({color, index, deleting, addNewContactColor}) => {
+  const [textColor, setTextColor] = useState(color.substring(1));
+  const [boxColor, setBoxColor] = useState(color);
 
-  const validateColor = (option) => {
-    const hex = `#${option}`;
+  //update text and then validate if its a valid hex color
+  const updateColorOption = (newColor) => {
+    setTextColor(newColor);
+    validateColor(newColor);
+  }
+
+  const validateColor = (newColor) => {
+    const hex = `#${newColor}`;
     const regex = /^#([0-9A-F]{3}){1,2}$/i;
 
     if (regex.test(hex)) {
-      return hex;
+      addNewContactColor(hex, index);
+      setBoxColor(hex);
+      return;
     }
-    return '#363636';
+    setBoxColor('#363636');
   };
 
   return (
     <Row>
       <Flex alignItems="center">
-        <Color color={validateColor(colorOption)} key={'color' + index} />
+        <Color color={boxColor} key={'color'+index} />
         <S_Text>#</S_Text>
         <Flex justifyContent="space-between" style={{flex: 1}}>
           <Input
-            value={colorOption}
+            value={textColor}
             autoCapitalize='characters'
             maxLength={6}
-            onChange={setColorOption}
+            onChange={newColor => updateColorOption(newColor)}
             style={{flex: 1, height: '100%'}}
           />
           {deleting && <S_Text color="error">Delete</S_Text>}

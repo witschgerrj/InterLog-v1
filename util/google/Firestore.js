@@ -98,3 +98,11 @@ export const FB_getUserPreferenceData = async () => {
     
   return doc.data();
 };
+
+export const FB_updateContactColors = (contactColors) => {
+  db.collection('Users')
+  .doc('WNJWWElZUACGPoSc8w6l')
+  .update({
+    contact_colors: contactColors
+  });
+}

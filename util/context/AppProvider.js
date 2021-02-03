@@ -6,7 +6,8 @@ import {
   FB_timestamp,
   FB_archiveContact,
   FB_deleteContact,
-  FB_deleteContactFromArchive
+  FB_deleteContactFromArchive,
+  FB_updateContactColors
 } from '../google/Firestore';
 import 'react-native-get-random-values';
 import {nanoid} from 'nanoid';
@@ -89,7 +90,8 @@ export default AppProvider = ({children}) => {
     FB_createContact,
     FB_archiveContact,
     FB_deleteContact,
-    FB_deleteContactFromArchive
+    FB_deleteContactFromArchive,
+    FB_updateContactColors
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;
