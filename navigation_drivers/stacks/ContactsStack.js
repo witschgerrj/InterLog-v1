@@ -8,12 +8,11 @@ import NewContact from '../../screens/contacts/NewContact';
 import Notes from '../../screens/Notes';
 import Settings from '../../screens/settings/Settings';
 import ContactArchive from '../../screens/settings/ContactArchive';
+import ContactColors from '../../screens/settings/ContactColors';
 
 const Stack = createStackNavigator();
 
 export default contacts_stack = () => {
-
-  const {contacts} = useContext(AppContext);
 
   return (
     <Stack.Navigator 
@@ -46,6 +45,10 @@ export default contacts_stack = () => {
         name='ContactArchive'
         component={ContactArchive}
         options={{title: 'Contact Archive'}}/>
+      <Stack.Screen 
+        name='ContactColors'
+        component={ContactColors}
+        options={{title: 'Contact Colors'}}/>
     </Stack.Navigator>
   );
 }

@@ -17,7 +17,7 @@ export default AppProvider = ({children}) => {
   const [contacts, setContacts] = useState([]);
   const [catalog, setCatalog] = useState([]);
   const [theme, setTheme] = useState(null);
-  const [groupColors, setGroupColors] = useState([]);
+  const [contactColors, setContactColors] = useState([]);
   const [lang, setLang] = useState(null);
   const [contactArchive, setContactArchive] = useState([]);
   const pixelRatio = PixelRatio.getFontScale();
@@ -72,7 +72,7 @@ export default AppProvider = ({children}) => {
     contacts,
     catalog,
     theme,
-    groupColors,
+    contactColors,
     pixelRatio,
     deviceWidth,
     deviceHeight,
@@ -81,7 +81,7 @@ export default AppProvider = ({children}) => {
     updateContacts,
     setCatalog,
     setTheme,
-    setGroupColors,
+    setContactColors,
     setContactArchive,
     getUID,
     formattedTime,

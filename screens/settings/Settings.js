@@ -10,9 +10,10 @@ export default Settings = ({navigation, route: {params}}) => {
   const HEADER_SPACING = 16;
 
   const options = [
-    {name: 'Contact Archive', screen: 'ContactArchive', params: {}},
-    {name: 'Contact Colors', screen: 'ContactColors', params: {}},
-    {name: 'Themes', screen: 'Themes', params: {}},
+    {name: 'Contact Archive', screen: 'ContactArchive'},
+    {name: 'Contact Colors', screen: 'ContactColors'},
+    {name: 'Themes', screen: 'Themes'},
+    {name: 'Language', screen: 'Language'}
   ];
 
   useLayoutEffect(() => {

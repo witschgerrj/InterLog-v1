@@ -94,7 +94,7 @@ export default ContactArchive = ({navigation}) => {
             <HeaderIcon
               source={Delete}
               style={{marginRight: HEADER_SPACING}}
-              onPress={() => setDeleting(!deleting)}
+              onPress={() => setDeleting(true)}
             />
           ) : (
             <Pressable onPress={() => setDeleting(false)}>

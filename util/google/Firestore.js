@@ -89,13 +89,12 @@ export const FB_deleteContact = (id) => {
     .delete();
 };
 
-export const mock_group_colors = [
-  '#363636',
-  '#FCFC57',
-  '#FF5F5F',
-  '#FF6CF4',
-  '#DBDBDB',
-  '#5CD9FF',
-  '#5FFF71',
-  '#9262FF',
-];
+//there is only a single doc in Users so a map is not returned
+export const FB_getUserPreferenceData = async () => {
+  const doc = await db
+    .collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .get()
+    
+  return doc.data();
+};
