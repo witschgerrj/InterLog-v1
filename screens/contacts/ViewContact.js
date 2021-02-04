@@ -19,9 +19,13 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {contacts, updateContacts, deviceWidth, FB_updateContact} = useContext(
-    AppContext,
-  );
+  const {
+    contacts,
+    updateContacts,
+    deviceWidth,
+    FB_updateContact,
+    lang,
+  } = useContext(AppContext);
   const {
     contactIndex,
     contact,
@@ -100,7 +104,7 @@ export default Contacts = ({navigation, route: {params}}) => {
           <S_Text
             color="link"
             style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-            Name
+            {lang.NAME}
           </S_Text>
           <Input
             value={name}
@@ -120,7 +124,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Email
+          {lang.EMAIL}
         </S_Text>
         <Input
           value={email}
@@ -139,7 +143,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Phone
+          {lang.PHONE}
         </S_Text>
         <Input
           value={phone}

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import {useContext} from 'react';
 import {AppContext} from '../../util/context/AppProvider';
 import Contacts from '../../screens/contacts/Contacts';
 import ViewContact from '../../screens/contacts/ViewContact';
@@ -13,6 +12,7 @@ import ContactColors from '../../screens/settings/ContactColors';
 const Stack = createStackNavigator();
 
 export default contacts_stack = () => {
+  const {lang} = useContext(AppContext);
 
   return (
     <Stack.Navigator 
@@ -26,29 +26,32 @@ export default contacts_stack = () => {
       }}>
       <Stack.Screen 
         name='Contacts'
-        component={Contacts}/>
+        component={Contacts}
+        options={{title: lang.HEADER.CONTACTS}}/>
       <Stack.Screen 
         name='ViewContact'
         component={ViewContact}
-        options={{title: 'View Contact'}}/>
+        options={{title: lang.HEADER.VIEW_CONTACT}}/>
       <Stack.Screen 
         name='NewContact'
         component={NewContact}
-        options={{title: 'New Contact'}}/>
+        options={{title: lang.HEADER.NEW_CONTACT}}/>
       <Stack.Screen 
         name='Notes'
-        component={Notes}/>
+        component={Notes}
+        options={{title: lang.HEADER.NOTES}}/>
       <Stack.Screen 
         name='Settings'
-        component={Settings}/>
+        component={Settings}
+        options={{title: lang.HEADER.SETTINGS}}/>
       <Stack.Screen 
         name='ContactArchive'
         component={ContactArchive}
-        options={{title: 'Contact Archive'}}/>
+        options={{title: lang.HEADER.CONTACT_ARCHIVE}}/>
       <Stack.Screen 
         name='ContactColors'
         component={ContactColors}
-        options={{title: 'Contact Colors'}}/>
+        options={{title: lang.HEADER.CONTACT_COLORS}}/>
     </Stack.Navigator>
   );
 }

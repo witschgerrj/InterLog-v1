@@ -9,40 +9,48 @@ import Back from '../../assets/back.png';
 import Delete from '../../assets/delete.png';
 import Add from '../../assets/add.png';
 import deepEqual from 'deep-equal';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default ContactColors = ({navigation}) => {
-  const {contactColors, setContactColors, FB_updateContactColors} = useContext(AppContext);
+  const {
+    contactColors,
+    setContactColors,
+    FB_updateContactColors,
+    lang,
+  } = useContext(AppContext);
   //using a second contactColors state for all the new changes and then can compare with the original.
-  const [updatedContactColors, setUpdatedContactColors] = useState([...contactColors]);
+  const [newContactColors, setNewContactColors] = useState([...contactColors]);
   const [deleting, setDeleting] = useState(false);
-  
+
   const HEADER_SPACING = 16;
 
-  const addNewContactColor = () => {
-    setUpdatedContactColors([...updatedContactColors, ''])
-  }
+  const addColor = () => {
+    setNewContactColors([...newContactColors, '']);
+  };
 
-  const deleteContactColor = (index) => {
-    let contactColors = [...updatedContactColors];
-    contactColors.splice(index, 1);
-    setUpdatedContactColors(contactColors);
-  }
+  const deleteColor = (index) => {
+    const copy = [...newContactColors];
+    copy.splice(index, 1);
+    setNewContactColors(copy);
+  };
 
   const updateContactColor = (color, index) => {
-    let copyUpdatedContactColors = [...updatedContactColors];
-    copyUpdatedContactColors[index] = color;
-    setUpdatedContactColors(copyUpdatedContactColors);
-  }
+    let copy = [...newContactColors];
+    copy[index] = color;
+    setNewContactColors(copy);
+  };
 
-  const updateColorsAndGoBack = () => {
-    const filteredColors = [...updatedContactColors].filter(color => color !== '');
-    
+  const setColorsAndGoBack = () => {
+    const filteredColors = [...newContactColors].filter(
+      (color) => color !== '',
+    );
+
     if (!deepEqual(contactColors, filteredColors)) {
       setContactColors(filteredColors);
       FB_updateContactColors(filteredColors);
     }
     navigation.goBack();
-  }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -51,7 +59,7 @@ export default ContactColors = ({navigation}) => {
           <HeaderIcon
             source={Back}
             style={{marginLeft: HEADER_SPACING}}
-            onPress={() => updateColorsAndGoBack()}
+            onPress={() => setColorsAndGoBack()}
           />
         ),
         headerRight: () =>
@@ -61,7 +69,7 @@ export default ContactColors = ({navigation}) => {
               justifyContent="space-between"
               style={{width: 80, marginRight: HEADER_SPACING}}>
               <HeaderIcon source={Delete} onPress={() => setDeleting(true)} />
-              <HeaderIcon source={Add} onPress={addNewContactColor} />
+              <HeaderIcon source={Add} onPress={addColor} />
             </Flex>
           ) : (
             <Pressable onPress={() => setDeleting(false)}>
@@ -71,7 +79,7 @@ export default ContactColors = ({navigation}) => {
                   marginRight: HEADER_SPACING,
                   fontWeight: 'bold',
                 }}>
-                Done
+                {lang.DONE}
               </S_Text>
             </Pressable>
           ),
@@ -82,16 +90,18 @@ export default ContactColors = ({navigation}) => {
 
   return (
     <S_SafeAreaView>
-      {updatedContactColors.map((color, index) => (
-        <ColorRow
-          color={color}
-          index={index}
-          deleting={deleting}
-          key={'colorRow' + index}
-          deleteContactColor={deleteContactColor}
-          updateContactColor={updateContactColor}
-        />
-      ))}
+      <ScrollView>
+        {newContactColors.map((color, index) => (
+          <ColorRow
+            color={color}
+            index={index}
+            deleting={deleting}
+            key={'colorRow' + index}
+            deleteColor={deleteColor}
+            updateContactColor={updateContactColor}
+          />
+        ))}
+      </ScrollView>
     </S_SafeAreaView>
   );
 };

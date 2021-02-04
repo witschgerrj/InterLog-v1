@@ -19,9 +19,14 @@ const ColorIndicator = styled.View`
 `;
 
 export default Contacts = ({navigation, route: {params}}) => {
-  const {updateContacts, contacts, getUID, FB_createContact, deviceWidth} = useContext(
-    AppContext,
-  );
+  const {
+    updateContacts,
+    contacts,
+    getUID,
+    FB_createContact,
+    deviceWidth,
+    lang,
+  } = useContext(AppContext);
   const {
     contact,
     contact: {notes},
@@ -87,7 +92,7 @@ export default Contacts = ({navigation, route: {params}}) => {
                   marginRight: HEADER_SPACING,
                   fontWeight: 'bold',
                 }}>
-                Save
+                {lang.SAVE}
               </S_Text>
             </Pressable>
           ),
@@ -105,12 +110,12 @@ export default Contacts = ({navigation, route: {params}}) => {
           <S_Text
             color="link"
             style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-            Name
+            {lang.NAME}
           </S_Text>
           <Input
             value={name}
             placeholder="First and Last"
-            autoCapitalize='words'
+            autoCapitalize="words"
             onChange={setName}
             style={{width: nameWidth}}
             maxLength={50}
@@ -125,7 +130,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Email
+          {lang.EMAIL}
         </S_Text>
         <Input
           value={email}
@@ -144,7 +149,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Phone
+          {lang.PHONE}
         </S_Text>
         <Input
           value={phone}

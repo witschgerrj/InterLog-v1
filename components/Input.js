@@ -10,6 +10,7 @@ export default Input = ({
   maxLength,
   multiline,
   onFocus,
+  editable,
   autoCapitalize
 }) => {
   const {colors, fontSize} = useTheme();
@@ -27,6 +28,7 @@ export default Input = ({
       onChangeText={onChange}
       maxLength={maxLength}
       multiline={multiline}
+      editable={editable}
       onFocus={onFocus}
       autoCorrect={false} 
       spellCheck={false}

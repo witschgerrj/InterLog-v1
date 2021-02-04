@@ -1,14 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Catalog from '../../screens/catalog/Catalog';
-// import CatalogAdd from '../screens/catalogAdd';
-// import CatalogCategory from '../screens/catalogCategory';
-// import CatalogItemNotes from '../screens/catalogItemNotes';
-// import CatalogItemView from '../screens/catalogItemView';
+import {AppContext} from '../../util/context/AppProvider';
 
 const Stack = createStackNavigator();
 
 export default CatalogStack = () => {
+  const {lang} = useContext(AppContext);
+
   return (
     <Stack.Navigator 
       initialRouteName={'Catalog'}
@@ -20,7 +19,7 @@ export default CatalogStack = () => {
       <Stack.Screen 
         name='Catalog'
         component={Catalog}
-        options={{title: 'Catalog'}}/>
+        options={{title: lang.HEADER.CATALOG}}/>
     </Stack.Navigator>
   );
 }

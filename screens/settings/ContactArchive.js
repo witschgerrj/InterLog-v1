@@ -27,6 +27,7 @@ export default ContactArchive = ({navigation}) => {
     contacts,
     updateContacts,
     formattedTime,
+    lang,
     FB_deleteContactFromArchive,
     FB_createContact,
   } = useContext(AppContext);
@@ -104,7 +105,7 @@ export default ContactArchive = ({navigation}) => {
                   marginRight: HEADER_SPACING,
                   fontWeight: 'bold',
                 }}>
-                Done
+                {lang.DONE}
               </S_Text>
             </Pressable>
           ),
@@ -143,7 +144,7 @@ export default ContactArchive = ({navigation}) => {
               <Pressable onPress={() => confirmDelete(id, index)}>
                 <Flex alignItems="center" style={{height: '100%'}}>
                   <S_Text color="error" fontWeight="bold">
-                    Delete
+                    {lang.DELETE}
                   </S_Text>
                 </Flex>
               </Pressable>

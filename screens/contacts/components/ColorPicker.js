@@ -30,7 +30,7 @@ export default ColorPicker = ({activeColor, setColor, BOX_SIZE}) => {
         maxHeight: MAX_HEIGHT,
       }}>
       <Flex
-        flexWrap="wrap"
+        flexWrap="wrap-reverse"
         style={{paddingTop: PADDING}}>
         {contactColors.map((color, index) => (
           <Pressable

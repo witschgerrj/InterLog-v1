@@ -17,7 +17,8 @@ export default Contacts = ({navigation}) => {
     updateContacts,
     setContactArchive,
     contactArchive,
-    contacts
+    contacts,
+    lang
   } = useContext(AppContext);
 
   const [archiving, setArchiving] = useState(false);
@@ -89,7 +90,7 @@ export default Contacts = ({navigation}) => {
                   marginRight: HEADER_SPACING,
                   fontWeight: 'bold',
                 }}>
-                Done
+                {lang.DONE}
               </S_Text>
             </Pressable>
           ),
@@ -114,8 +115,7 @@ export default Contacts = ({navigation}) => {
       ) : (
         <View style={{padding: 48}}>
           <S_Text textAlign="center" color="secondary">
-            No contacts available. {'\n\n'} To add a new client, press the plus
-            icon at the top right of the screen.
+             {`${lang.NO_CONTACTS_AVAILABLE}\n\n${lang.NO_CONTACTS_INSTRUCTIONS}`}
           </S_Text>
         </View>
       )}

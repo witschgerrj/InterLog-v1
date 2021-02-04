@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {AppContext} from '../../../util/context/AppProvider';
+import {Pressable} from 'react-native';
 import styled from 'styled-components';
 import S_Text from '../../../components/S_Text';
 import Input from '../../../components/Input';
 import Flex from '../../../components/Flex';
-import {Pressable} from 'react-native';
 
 const Color = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -18,11 +19,18 @@ export default ColorRow = ({
   index,
   deleting,
   updateContactColor,
-  deleteContactColor,
+  deleteColor
 }) => {
+  const {lang} = useContext(AppContext)
   const [textColor, setTextColor] = useState(color ? color.substring(1) : '');
   const [boxColor, setBoxColor] = useState(color ? color : '#363636');
 
+  //update state on delete or change of color
+  useEffect(() => {
+    setTextColor(color ? color.substring(1) : '');
+    setBoxColor(color ? color : '#363636');
+  }, [color])
+  
   //update text and then validate if its a valid hex color
   const updateColorOption = (newColor) => {
     setTextColor(newColor);
@@ -51,12 +59,13 @@ export default ColorRow = ({
             value={textColor}
             autoCapitalize="characters"
             maxLength={6}
+            editable={!deleting}
             onChange={(newColor) => updateColorOption(newColor)}
             style={{flex: 1, height: '100%'}}
           />
           {deleting && (
-            <Pressable onPress={() => deleteContactColor(index)}>
-              <S_Text color="error">Delete</S_Text>
+            <Pressable onPress={() => deleteColor(index)}>
+              <S_Text color="error">{lang.DELETE}</S_Text>
             </Pressable>
           )}
         </Flex>

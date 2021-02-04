@@ -27,9 +27,7 @@ export default Contact = (props) => {
   } = props;
 
   const { name, last_updated, color } = contact;
-  
-  const {formattedTime} = useContext(AppContext);
-
+  const {formattedTime, lang} = useContext(AppContext);
   const timestamp = formattedTime(last_updated);
 
   const navigateViewContact = () => {
@@ -61,7 +59,7 @@ export default Contact = (props) => {
           <Pressable onPress={() => archiveContact(contact, contactIndex)}>
             <Flex alignItems="center" style={{height: '100%'}}>
               <S_Text color="error" fontWeight="bold">
-                Archive
+                {lang.ARCHIVE}
               </S_Text>
             </Flex>
           </Pressable>

@@ -10,6 +10,7 @@ import {
   FB_updateContactColors
 } from '../google/Firestore';
 import 'react-native-get-random-values';
+import languages from '../lang/languages';
 import {nanoid} from 'nanoid';
 
 export const AppContext = createContext();
@@ -19,7 +20,7 @@ export default AppProvider = ({children}) => {
   const [catalog, setCatalog] = useState([]);
   const [theme, setTheme] = useState(null);
   const [contactColors, setContactColors] = useState([]);
-  const [lang, setLang] = useState(null);
+  const [lang, setLang] = useState(languages['en_US']);
   const [contactArchive, setContactArchive] = useState([]);
   const pixelRatio = PixelRatio.getFontScale();
   const deviceWidth = Dimensions.get('window').width;
@@ -51,21 +52,21 @@ export default AppProvider = ({children}) => {
     const years = Math.floor(days / 365);
 
     if (years > 0) {
-      return 'Over a year ago';
+      return lang.TIME.YEAR_AGO;
     }
     if (days > 0) {
-      if (days === 1) return '1 day ago';
-      return `${days} days ago`;
+      if (days === 1) return '1 ' + lang.TIME.DAY_AGO;
+      return `${days} ${lang.TIME.DAYS_AGO}`;
     }
     if (hours > 0) {
-      if (hours === 1) return '1 hour ago';
-      return `${hours} hours ago`;
+      if (hours === 1) return '1 ' + lang.TIME.HOUR_AGO;
+      return `${hours} ${lang.TIME.HOURS_AGO}`;
     }
     if (minutes > 0) {
-      if (minutes === 1) return '1 minute ago';
-      return `${minutes} minutes ago`;
+      if (minutes === 1) return '1 ' + lang.TIME.MINUTE_AGO;
+      return `${minutes} ${lang.TIME.MINUTES_AGO}`;
     }
-    return 'moments ago';
+    return lang.TIME.MOMENTS_AGO;
   };
 
   const app_data = {
