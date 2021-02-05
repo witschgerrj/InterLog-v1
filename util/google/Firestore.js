@@ -106,3 +106,11 @@ export const FB_updateContactColors = (contactColors) => {
     contact_colors: contactColors
   });
 }
+
+export const FB_updateLang = (langCode) => {
+  db.collection('Users')
+  .doc('WNJWWElZUACGPoSc8w6l')
+  .update({
+    lang: langCode
+  });
+}

@@ -7,7 +7,8 @@ import {
   FB_archiveContact,
   FB_deleteContact,
   FB_deleteContactFromArchive,
-  FB_updateContactColors
+  FB_updateContactColors,
+  FB_updateLang
 } from '../google/Firestore';
 import 'react-native-get-random-values';
 import languages from '../lang/languages';
@@ -20,6 +21,7 @@ export default AppProvider = ({children}) => {
   const [catalog, setCatalog] = useState([]);
   const [theme, setTheme] = useState(null);
   const [contactColors, setContactColors] = useState([]);
+  const [langCode, setLangCode] = useState('en_US');
   const [lang, setLang] = useState(languages['en_US']);
   const [contactArchive, setContactArchive] = useState([]);
   const pixelRatio = PixelRatio.getFontScale();
@@ -71,6 +73,7 @@ export default AppProvider = ({children}) => {
 
   const app_data = {
     lang,
+    langCode,
     contacts,
     catalog,
     theme,
@@ -80,6 +83,7 @@ export default AppProvider = ({children}) => {
     deviceHeight,
     contactArchive,
     setLang,
+    setLangCode,
     updateContacts,
     setCatalog,
     setTheme,
@@ -92,7 +96,8 @@ export default AppProvider = ({children}) => {
     FB_archiveContact,
     FB_deleteContact,
     FB_deleteContactFromArchive,
-    FB_updateContactColors
+    FB_updateContactColors,
+    FB_updateLang
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

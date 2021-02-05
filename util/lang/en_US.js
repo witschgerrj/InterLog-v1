@@ -18,6 +18,8 @@ export default en_US = {
     SETTINGS: 'Settings',
     CONTACT_ARCHIVE: 'Contact Archive',
     CONTACT_COLORS: 'Contact Colors',
+    THEMES: 'Themes',
+    LANGUAGE: 'Language',
   },
   EMPTY: {
     NO_CONTACTS_AVAILABLE: 'No contacts available',

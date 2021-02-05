@@ -8,6 +8,7 @@ import Notes from '../../screens/Notes';
 import Settings from '../../screens/settings/Settings';
 import ContactArchive from '../../screens/settings/ContactArchive';
 import ContactColors from '../../screens/settings/ContactColors';
+import Language from '../../screens/settings/Language';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,10 @@ export default contacts_stack = () => {
         name='ContactColors'
         component={ContactColors}
         options={{title: lang.HEADER.CONTACT_COLORS}}/>
+      <Stack.Screen 
+        name='Language'
+        component={Language}
+        options={{title: lang.HEADER.LANGUAGE}}/>
     </Stack.Navigator>
   );
 }

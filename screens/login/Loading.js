@@ -11,6 +11,7 @@ export default Loading = ({}) => {
   const {
     setContactArchive,
     setLang,
+    setLangCode,
     updateContacts,
     setCatalog,
     setTheme,
@@ -26,6 +27,7 @@ export default Loading = ({}) => {
     setContactArchive(firebaseContactArchive);
     setContactColors(contact_colors);
     setLang(languages[lang]);
+    setLangCode(lang);
   };
 
   const asyncData = () => {
