@@ -116,7 +116,7 @@ export default ContactArchive = ({navigation}) => {
     const {name, last_updated, color, id} = contact;
     const timestamp = formattedTime(last_updated);
     return (
-      <Pressable onPress={() => {}} key={'archiveContact' + index}>
+      <Pressable key={'archiveContact' + index}>
         <Row>
           <Flex justifyContent="space-between">
             <Pressable

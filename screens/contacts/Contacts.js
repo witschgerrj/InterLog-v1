@@ -52,7 +52,7 @@ export default Contacts = ({navigation}) => {
 
     let FB_contactCopy = {...contactCopy};
     delete FB_contactCopy.id;
-    FB_archiveContact(id, contact);
+    FB_archiveContact(id, FB_contactCopy);
     FB_deleteContact(id);
   };
 

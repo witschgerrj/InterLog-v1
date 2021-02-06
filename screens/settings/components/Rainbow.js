@@ -22,7 +22,13 @@ const Custom = styled.View`
   marginBottom: 16px;
 `;
 
-export default ColorRow = ({addEmpty, addColor}) => {
+export default ColorRow = ({
+  addEmpty,
+  addColor,
+  editColor,
+  showRainbow,
+  editIndex,
+}) => {
   const {deviceWidth} = useContext(AppContext);
   const {colors} = useTheme();
   const MARGIN = 16;
@@ -77,13 +83,20 @@ export default ColorRow = ({addEmpty, addColor}) => {
       <Flex flexWrap="wrap" justifyContent="space-evenly">
         <Pressable onPress={addEmpty}>
           <Custom borderColor={colors.secondary} size={BOX_SIZE}>
-            <Flex alignItems='center' justifyContent='space-evenly' style={{flex: 1}}>
-              <Image source={Add} style={{tintColor: colors.secondary}}/>
+            <Flex
+              alignItems="center"
+              justifyContent="space-evenly"
+              style={{flex: 1}}>
+              <Image source={Add} style={{tintColor: colors.secondary}} />
             </Flex>
           </Custom>
         </Pressable>
         {colorList.map((color, index) => (
-          <Pressable onPress={() => addColor(color)} key={'rainbow' + index}>
+          <Pressable
+            onPress={() =>
+              showRainbow === 'add' ? addColor(color) : editColor(color, editIndex)
+            }
+            key={'rainbow' + index}>
             <Color size={BOX_SIZE} color={color} />
           </Pressable>
         ))}

@@ -14,6 +14,8 @@ import deepEqual from 'deep-equal';
 export default ContactColors = ({navigation}) => {
   const {
     contactColors,
+    contacts,
+    updateContacts,
     setContactColors,
     FB_updateContactColors,
     lang,
@@ -21,22 +23,30 @@ export default ContactColors = ({navigation}) => {
   //using a second contactColors state for all the new changes and then can compare with the original.
   const [newContactColors, setNewContactColors] = useState([...contactColors]);
   const [deleting, setDeleting] = useState(false);
-  const [showRainbow, setShowRainbow] = useState(false);
+  const [editIndex, setEditIndex] = useState(0);
+  const [showRainbow, setShowRainbow] = useState(null);
 
   const HEADER_SPACING = 16;
 
   const addColor = (color) => {
     setNewContactColors([...newContactColors, color]);
-    setShowRainbow(false);
+    setShowRainbow(null);
+  };
+
+  const editColor = (color, index) => {
+    let copyColors = [...newContactColors]
+    copyColors[index] = color;
+    setNewContactColors(copyColors);
+    setShowRainbow(null);
   };
 
   const addEmpty = () => {
     setNewContactColors([...newContactColors, '']);
-    setShowRainbow(false);
-  }
+    setShowRainbow(null);
+  };
 
   const deleteColor = (index) => {
-    const copy = [...newContactColors];
+    let copy = [...newContactColors];
     copy.splice(index, 1);
     setNewContactColors(copy);
   };
@@ -48,9 +58,17 @@ export default ContactColors = ({navigation}) => {
   };
 
   const setColorsAndGoBack = () => {
-    const filteredColors = [...newContactColors].filter(
-      (color) => color !== '',
-    );
+    //checking for empty colors and duplicates
+    const colorMap = {};
+    let filteredColors = [...newContactColors];
+    filteredColors = filteredColors.filter(color => {
+      const exists = color in colorMap
+      if (color !== '' && !exists) {
+        colorMap[color] = 1;
+        return true
+      }
+      return false
+    })
 
     if (!deepEqual(contactColors, filteredColors)) {
       setContactColors(filteredColors);
@@ -66,15 +84,14 @@ export default ContactColors = ({navigation}) => {
   useLayoutEffect(() => {
     navigation.setOptions(
       {
-        headerLeft: () => (
-            !showRainbow && (
-              <HeaderIcon
+        headerLeft: () =>
+          !showRainbow && (
+            <HeaderIcon
               source={Back}
               style={{marginLeft: HEADER_SPACING}}
               onPress={() => setColorsAndGoBack()}
             />
-          )
-        ),
+          ),
         headerRight: () =>
           !deleting && !showRainbow ? (
             <Flex
@@ -82,13 +99,14 @@ export default ContactColors = ({navigation}) => {
               justifyContent="space-between"
               style={{width: 80, marginRight: HEADER_SPACING}}>
               <HeaderIcon source={Delete} onPress={() => setDeleting(true)} />
-              <HeaderIcon source={Add} onPress={() => setShowRainbow(true)} />
+              <HeaderIcon source={Add} onPress={() => setShowRainbow('add')} />
             </Flex>
           ) : (
-            <Pressable onPress={() => {
-              setDeleting(false);
-              setShowRainbow(false);
-            }}>
+            <Pressable
+              onPress={() => {
+                setDeleting(false);
+                setShowRainbow(null);
+              }}>
               <S_Text
                 color="link"
                 style={{
@@ -107,7 +125,13 @@ export default ContactColors = ({navigation}) => {
   return (
     <S_SafeAreaView>
       {showRainbow ? (
-        <Rainbow addEmpty={addEmpty} addColor={addColor}/>
+        <Rainbow
+          editIndex={editIndex}
+          addEmpty={addEmpty}
+          editColor={editColor}
+          addColor={addColor}
+          showRainbow={showRainbow}
+        />
       ) : (
         <ScrollView>
           {newContactColors.map((color, index) => (
@@ -116,6 +140,7 @@ export default ContactColors = ({navigation}) => {
               index={index}
               deleting={deleting}
               key={'colorRow' + index}
+              setEditIndex={setEditIndex}
               deleteColor={deleteColor}
               setShowRainbow={setShowRainbow}
               updateContactColor={updateContactColor}

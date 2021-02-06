@@ -22,7 +22,8 @@ export default ColorRow = ({
   deleting,
   updateContactColor,
   deleteColor,
-  setShowRainbow
+  setShowRainbow,
+  setEditIndex,
 }) => {
   const {lang} = useContext(AppContext);
   const {colors} = useTheme();
@@ -56,7 +57,10 @@ export default ColorRow = ({
   return (
     <Row>
       <Flex alignItems="center">
-        <Pressable onPress={() => setShowRainbow(true)}>
+        <Pressable onPress={() => {
+          setShowRainbow('edit')
+          setEditIndex(index);
+        }}>
           <Color color={boxColor} key={'color' + index} />
         </Pressable>
         <S_Text>#</S_Text>
@@ -78,7 +82,10 @@ export default ColorRow = ({
             </Pressable>
           ) : (
             <Pressable
-              onPress={() => setShowRainbow(true)}
+              onPress={() => {
+                setShowRainbow('edit');
+                setEditIndex(index);
+              }}
               style={{flex: 1}}>
               <Flex
                 justifyContent="flex-end"

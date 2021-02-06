@@ -40,7 +40,7 @@ export default ColorPicker = ({activeColor, setColor, BOX_SIZE}) => {
               size={SIZE}
               color={color}
               style={{
-                marginBottom: PADDING,
+                marginTop: PADDING,
                 marginLeft: PADDING,
                 borderWidth: 4,
                 borderStyle: 'solid',
