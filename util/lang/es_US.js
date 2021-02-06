@@ -24,11 +24,14 @@ export default es_US = {
   EMPTY: {
     NO_CONTACTS_AVAILABLE: 'No hay contactos disponibles.',
     NO_CONTACTS_INSTRUCTIONS: 'Para agregar un nuevo cliente, presione el icono más en la parte superior derecha de la pantalla.',
+    NO_NOTES_AVAILABLE: 'No hay notas disponibles.',
+    NO_NOTES_INSTRUCTIONS: 'Haga clic en el icono de edición a continuación para comenzar.'
   },
   ARCHIVE: 'Archivo',
   DONE: 'Hecho',
   SAVE: 'Salvar',
   DELETE: 'Eliminar',
+  REMOVE: 'Remove es_US',
   NAME: 'Nombre',
   EMAIL: 'Email',
   PHONE: 'Teléfono',

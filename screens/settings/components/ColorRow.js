@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AppContext} from '../../../util/context/AppProvider';
-import {Pressable} from 'react-native';
+import {Pressable, Image, View} from 'react-native';
 import styled from 'styled-components';
 import S_Text from '../../../components/S_Text';
 import Input from '../../../components/Input';
 import Flex from '../../../components/Flex';
+import Paint from '../../../assets/paint.png';
+import {useTheme} from '@react-navigation/native';
 
 const Color = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -19,9 +21,11 @@ export default ColorRow = ({
   index,
   deleting,
   updateContactColor,
-  deleteColor
+  deleteColor,
+  setShowRainbow
 }) => {
-  const {lang} = useContext(AppContext)
+  const {lang} = useContext(AppContext);
+  const {colors} = useTheme();
   const [textColor, setTextColor] = useState(color ? color.substring(1) : '');
   const [boxColor, setBoxColor] = useState(color ? color : '#363636');
 
@@ -29,8 +33,8 @@ export default ColorRow = ({
   useEffect(() => {
     setTextColor(color ? color.substring(1) : '');
     setBoxColor(color ? color : '#363636');
-  }, [color])
-  
+  }, [color]);
+
   //update text and then validate if its a valid hex color
   const updateColorOption = (newColor) => {
     setTextColor(newColor);
@@ -52,20 +56,44 @@ export default ColorRow = ({
   return (
     <Row>
       <Flex alignItems="center">
-        <Color color={boxColor} key={'color' + index} />
+        <Pressable onPress={() => setShowRainbow(true)}>
+          <Color color={boxColor} key={'color' + index} />
+        </Pressable>
         <S_Text>#</S_Text>
-        <Flex justifyContent="space-between" style={{flex: 1}}>
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          style={{flex: 1, height: '100%'}}>
           <Input
             value={textColor}
             autoCapitalize="characters"
             maxLength={6}
             editable={!deleting}
             onChange={(newColor) => updateColorOption(newColor)}
-            style={{flex: 1, height: '100%'}}
+            style={{flex: 3, height: '100%'}}
           />
-          {deleting && (
+          {deleting ? (
             <Pressable onPress={() => deleteColor(index)}>
-              <S_Text color="error">{lang.DELETE}</S_Text>
+              <S_Text color="error">{lang.REMOVE}</S_Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => setShowRainbow(true)}
+              style={{flex: 1}}>
+              <Flex
+                justifyContent="flex-end"
+                alignItems="center"
+                style={{flex: 1}}>
+                <Image
+                  source={Paint}
+                  style={{
+                    tintColor: boxColor,
+                    resizeMode: 'contain',
+                    height: 22,
+                    width: 22,
+                  }}
+                />
+              </Flex>
             </Pressable>
           )}
         </Flex>

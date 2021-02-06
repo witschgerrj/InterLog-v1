@@ -33,9 +33,7 @@ export default ContactArchive = ({navigation}) => {
   } = useContext(AppContext);
 
   const [deleting, setDeleting] = useState(false);
-
   const {colors} = useTheme();
-
   const HEADER_SPACING = 16;
 
   const restoreContact = (contact, index) => {

@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {ScrollView, Image, View, Pressable} from 'react-native';
+import {useRoute, useTheme} from '@react-navigation/native';
+import {AppContext} from '../util/context/AppProvider';
 import S_Text from './S_Text';
 import NotesIcon from '../assets/write-notes.png';
-import {useRoute, useTheme} from '@react-navigation/native';
 
 export default NotesPreview = (props) => {
   const {children, navigation, fromScreen, contact, item} = props;
-  const {colors} = useTheme();
+  const {lang} = useContext(AppContext);
+  const {colors} = useTheme()
   const {params} = useRoute();
 
   const PADDING = 16;
@@ -22,7 +24,7 @@ export default NotesPreview = (props) => {
     if (notes === '') {
       return (
         <S_Text color="secondary">
-          No notes to display.{'\n\n'}Click on the edit icon below to begin.
+          {`${lang.EMPTY.NO_NOTES_AVAILABLE}\n\n${lang.EMPTY.NO_NOTES_INSTRUCTIONS}`}
         </S_Text>
       );
     }

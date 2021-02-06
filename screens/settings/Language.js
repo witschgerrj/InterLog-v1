@@ -1,5 +1,5 @@
 //row for contact
-import React, {useLayoutEffect, useContext, useState} from 'react';
+import React, {useLayoutEffect, useContext, useState, useRef} from 'react';
 import {AppContext} from '../../util/context/AppProvider';
 import {Image, Pressable} from 'react-native';
 import languages, {langMap} from '../../util/lang/languages';
@@ -11,17 +11,18 @@ export default Settings = ({navigation}) => {
   const {langCode, setLangCode, setLang, FB_updateLang} = useContext(
     AppContext,
   );
-  const [selectedLang, setSelectedLang] = useState(langCode);
+  const originalCode = useRef(langCode);
   const HEADER_SPACING = 16;
 
   const updateLang = (option) => {
     setLangCode(option);
-    setSelectedLang(option);
     setLang(languages[option]);
   };
 
   const saveAndBack = () => {
-    FB_updateLang(selectedLang);
+    if (originalCode !== langCode) {
+      FB_updateLang(langCode);
+    }
     navigation.goBack();
   };
 
@@ -38,13 +39,14 @@ export default Settings = ({navigation}) => {
     );
   });
 
-  return Object.keys(langMap).map((key) => {
+  return Object.keys(langMap).map((key, index) => {
     const option = langMap[key];
     return (
       <RowSelection
         onPress={updateLang}
         option={option}
-        selected={option === selectedLang}>
+        selected={option === langCode}
+        key={'langOption' + index}>
         <S_Text>{key}</S_Text>
       </RowSelection>
     );
