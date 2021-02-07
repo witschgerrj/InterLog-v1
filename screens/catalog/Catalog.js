@@ -51,7 +51,7 @@ export default Catalog = ({navigation}) => {
           <GridBox
             size={BOX_SIZE}
             name={item.name}
-            source={item.source}
+            source={item.source} 
             style={{marginRight: PADDING, marginTop: PADDING, borderRadius: 4}}
           />
         ))}

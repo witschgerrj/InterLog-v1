@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState, useContext, createRef} from 'react';
+import React, {useLayoutEffect, useState, useContext, useEffect} from 'react';
 import {Pressable, ScrollView} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
@@ -18,6 +18,7 @@ export default ContactColors = ({navigation}) => {
     updateContacts,
     setContactColors,
     FB_updateContactColors,
+    FB_updateContact,
     lang,
   } = useContext(AppContext);
   //using a second contactColors state for all the new changes and then can compare with the original.
@@ -25,17 +26,51 @@ export default ContactColors = ({navigation}) => {
   const [deleting, setDeleting] = useState(false);
   const [editIndex, setEditIndex] = useState(0);
   const [showRainbow, setShowRainbow] = useState(null);
+  const [colorToContacts, setColorToContacts] = useState({});
 
   const HEADER_SPACING = 16;
+
+  //creates a map with key color and values being contacts associated with the color
+  const createColorToContacts = () => {
+    let contactCopy = [...contacts];
+    let groupedByColor = {};
+
+    contactCopy.map((contact, index) => {
+      const color = contact.color;
+      const exists = color in groupedByColor;
+      if (exists) {
+        groupedByColor[color].push({...contact, contactIndex: index});
+        return;
+      }
+      groupedByColor[color] = [{...contact, contactIndex: index}];
+    });
+
+    setColorToContacts(groupedByColor);
+  };
+
+  const updateColorToContacts = (newColor, oldColor) => {
+    let copy = {...colorToContacts};
+    copy[newColor] = copy[oldColor];
+    delete copy[oldColor];
+
+    setColorToContacts(copy);
+  };
+
+  useEffect(() => {
+    createColorToContacts();
+  }, []);
 
   const addColor = (color) => {
     setNewContactColors([...newContactColors, color]);
     setShowRainbow(null);
   };
 
-  const editColor = (color, index) => {
-    let copyColors = [...newContactColors]
-    copyColors[index] = color;
+  const editColor = (newColor, oldColorIndex) => {
+    let copyColors = [...newContactColors];
+    let oldColor = copyColors[oldColorIndex];
+    copyColors[oldColorIndex] = newColor;
+
+    updateColorToContacts(newColor, oldColor);
     setNewContactColors(copyColors);
     setShowRainbow(null);
   };
@@ -61,24 +96,46 @@ export default ContactColors = ({navigation}) => {
     //checking for empty colors and duplicates
     const colorMap = {};
     let filteredColors = [...newContactColors];
-    filteredColors = filteredColors.filter(color => {
-      const exists = color in colorMap
+    filteredColors = filteredColors.filter((color) => {
+      const exists = color in colorMap;
       if (color !== '' && !exists) {
         colorMap[color] = 1;
-        return true
+        return true;
       }
-      return false
-    })
+      return false;
+    });
 
+    //check if anything has changed
     if (!deepEqual(contactColors, filteredColors)) {
       setContactColors(filteredColors);
       FB_updateContactColors(filteredColors);
+
+      //update associated contact colors in the DB
+      let contactsCopy = [...contacts];
+      const keys = Object.keys(colorToContacts);
+      
+      keys.map((color) => {
+        const contactArr = colorToContacts[color];
+        //check value of first index to check if colors are unchanged
+        if (!contactArr) return;
+        if (contactArr[0].color === color) return;
+
+        contactArr.map((contact) => {
+          const copy = {...contact};
+          delete copy.id;
+          delete copy.contactIndex;
+          FB_updateContact(contact.id, {...copy, color: color});
+          
+          let index = contact.contactIndex;
+
+          contactsCopy[index].color = color;
+        });
+      });
+      //locally update contacts with new colors
+      updateContacts(contactsCopy);
     }
     navigation.goBack();
   };
-
-  //don't allow duplicate colors to be added
-  //add functionality to click on color pallette icon to change current color
   //iterate through contacts to update new colors appropriately.
 
   useLayoutEffect(() => {

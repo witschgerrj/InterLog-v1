@@ -70,6 +70,7 @@ export const FB_updateContact = (id, contact) => {
     });
 };
 
+
 export const FB_createContact = (id, contact) => {
   db.collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
@@ -106,26 +107,19 @@ export const FB_getCatalog = async () => {
 
 //there is only a single doc in Users so a map is not returned
 export const FB_getUserPreferenceData = async () => {
-  const doc = await db
-    .collection('Users')
-    .doc('WNJWWElZUACGPoSc8w6l')
-    .get()
-    
+  const doc = await db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').get();
+
   return doc.data();
 };
 
 export const FB_updateContactColors = (contactColors) => {
-  db.collection('Users')
-  .doc('WNJWWElZUACGPoSc8w6l')
-  .update({
-    contact_colors: contactColors
+  db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').update({
+    contact_colors: contactColors,
   });
-}
+};
 
 export const FB_updateLang = (langCode) => {
-  db.collection('Users')
-  .doc('WNJWWElZUACGPoSc8w6l')
-  .update({
-    lang: langCode
+  db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').update({
+    lang: langCode,
   });
-}
+};
