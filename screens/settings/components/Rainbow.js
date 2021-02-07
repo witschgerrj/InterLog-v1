@@ -81,7 +81,7 @@ export default ColorRow = ({
         backgroundColor: colors.background,
       }}>
       <Flex flexWrap="wrap" justifyContent="space-evenly">
-        <Pressable onPress={addEmpty}>
+        <Pressable onPress={() => showRainbow === 'add' ? addEmpty() : editColor('', editIndex)}>
           <Custom borderColor={colors.secondary} size={BOX_SIZE}>
             <Flex
               alignItems="center"

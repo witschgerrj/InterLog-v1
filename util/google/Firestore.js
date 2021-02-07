@@ -89,6 +89,21 @@ export const FB_deleteContact = (id) => {
     .delete();
 };
 
+export const FB_getCatalog = async () => {
+  const snapshot = await db
+    .collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Catalog')
+    .get();
+
+  return snapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
+};
+
 //there is only a single doc in Users so a map is not returned
 export const FB_getUserPreferenceData = async () => {
   const doc = await db

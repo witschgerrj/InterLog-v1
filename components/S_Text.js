@@ -15,16 +15,23 @@ const textColor = ({colors, color}) => {
   }
 };
 
-export default S_Text = ({children, color, textAlign, style}) => {
+export default S_Text = ({
+  color,
+  textAlign,
+  numberOfLines,
+  style,
+  children,
+}) => {
   const {colors, fontSize} = useTheme();
 
   return (
     <Text
+      numberOfLines={numberOfLines}
       style={{
         color: textColor({colors, color}),
         fontSize: fontSize.md,
         textAlign,
-        ...style
+        ...style,
       }}>
       {children}
     </Text>

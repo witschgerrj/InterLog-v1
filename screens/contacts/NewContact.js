@@ -52,8 +52,6 @@ export default Contacts = ({navigation, route: {params}}) => {
   };
   const validateContact = () => {
     if (name !== '') return true;
-    if (email !== '') return true;
-    if (phone !== '') return true;
     return false;
   };
 

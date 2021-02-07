@@ -11,7 +11,7 @@ export default Input = ({
   multiline,
   onFocus,
   editable,
-  autoCapitalize,
+  autoCapitalize
 }) => {
   const {colors, fontSize} = useTheme();
 
