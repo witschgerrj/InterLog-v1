@@ -10,6 +10,10 @@ import Back from '../../assets/back.png';
 import Delete from '../../assets/delete.png';
 import Add from '../../assets/add.png';
 import deepEqual from 'deep-equal';
+import Banner from '../../components/Banner';
+
+//things to fix. If deleting a color or repeating it, contacts with that
+//color do not get reset to #363636 locally
 
 export default ContactColors = ({navigation}) => {
   const {
@@ -19,6 +23,7 @@ export default ContactColors = ({navigation}) => {
     setContactColors,
     FB_updateContactColors,
     FB_updateContact,
+    FB_timestamp,
     lang,
   } = useContext(AppContext);
   //using a second contactColors state for all the new changes and then can compare with the original.
@@ -27,6 +32,7 @@ export default ContactColors = ({navigation}) => {
   const [editIndex, setEditIndex] = useState(0);
   const [showRainbow, setShowRainbow] = useState(null);
   const [colorToContacts, setColorToContacts] = useState({});
+  const [duplicateBanner, setDuplicateBanner] = useState(false);
 
   const HEADER_SPACING = 16;
 
@@ -113,22 +119,34 @@ export default ContactColors = ({navigation}) => {
       //update associated contact colors in the DB
       let contactsCopy = [...contacts];
       const keys = Object.keys(colorToContacts);
-      
+
       keys.map((color) => {
+        //handle if color gets removed and contacts are assigned the color
+        const colorRemoved = !newContactColors.includes(color);
+
         const contactArr = colorToContacts[color];
         //check value of first index to check if colors are unchanged
         if (!contactArr) return;
-        if (contactArr[0].color === color) return;
+        if (!colorRemoved && contactArr[0].color === color) return;
 
         contactArr.map((contact) => {
           const copy = {...contact};
           delete copy.id;
           delete copy.contactIndex;
-          FB_updateContact(contact.id, {...copy, color: color});
-          
-          let index = contact.contactIndex;
+          FB_updateContact(
+            contact.id,
+            {
+              ...copy,
+              color: colorRemoved ? '#363636' : color,
+            },
+            false,
+          );
 
-          contactsCopy[index].color = color;
+          const index = contact.contactIndex;
+          contactsCopy[index] = {
+            ...contactsCopy[index],
+            color: colorRemoved ? '#363636' : color,
+          };
         });
       });
       //locally update contacts with new colors
@@ -136,7 +154,6 @@ export default ContactColors = ({navigation}) => {
     }
     navigation.goBack();
   };
-  //iterate through contacts to update new colors appropriately.
 
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -188,22 +205,32 @@ export default ContactColors = ({navigation}) => {
           editColor={editColor}
           addColor={addColor}
           showRainbow={showRainbow}
+          contactColors={newContactColors}
         />
       ) : (
         <ScrollView>
           {newContactColors.map((color, index) => (
             <ColorRow
+              contactColors={newContactColors}
               color={color}
               index={index}
               deleting={deleting}
-              key={'colorRow' + index}
               setEditIndex={setEditIndex}
               deleteColor={deleteColor}
               setShowRainbow={setShowRainbow}
               updateContactColor={updateContactColor}
+              setDuplicateBanner={setDuplicateBanner}
+              key={'colorRow' + index}
             />
           ))}
         </ScrollView>
+      )}
+      {duplicateBanner && (
+        <Banner
+          text={lang.DUPLICATE_COLOR_ENTRY}
+          onPress={() => setDuplicateBanner(false)}
+          style={{position: 'absolute', bottom: 0, width: '100%'}}
+        />
       )}
     </S_SafeAreaView>
   );

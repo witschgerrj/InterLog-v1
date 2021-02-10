@@ -59,17 +59,20 @@ export const FB_getContacts = async () => {
   });
 };
 
-export const FB_updateContact = (id, contact) => {
+export const FB_updateContact = (id, contact, updateTimestamp) => {
+  contact = updateTimestamp
+    ? {
+        ...contact,
+        last_updated: FB_timestamp(),
+      }
+    : contact;
+
   db.collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .doc(id)
-    .update({
-      ...contact,
-      last_updated: FB_timestamp(),
-    });
+    .update({contact});
 };
-
 
 export const FB_createContact = (id, contact) => {
   db.collection('Users')

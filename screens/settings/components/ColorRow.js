@@ -20,13 +20,14 @@ export default ColorRow = ({
   color,
   index,
   deleting,
+  contactColors,
   updateContactColor,
   deleteColor,
   setShowRainbow,
   setEditIndex,
+  setDuplicateBanner
 }) => {
   const {lang} = useContext(AppContext);
-  const {colors} = useTheme();
   const [textColor, setTextColor] = useState(color ? color.substring(1) : '');
   const [boxColor, setBoxColor] = useState(color ? color : '#363636');
 
@@ -38,13 +39,19 @@ export default ColorRow = ({
 
   //update text and then validate if its a valid hex color
   const updateColorOption = (newColor) => {
+    if (contactColors.includes(`#${newColor}`)) {
+      setDuplicateBanner(true);
+      return;
+    }
     setTextColor(newColor);
     validateColor(newColor);
   };
 
   const validateColor = (newColor) => {
     const hex = `#${newColor}`;
-    const regex = /^#([0-9A-F]{3}){1,2}$/i;
+    //checks shorthand hex as well
+    //const regex = /^#([0-9A-F]{3}){1,2}$/i;
+    const regex = /^#[0-9A-F]{6}$/i;
 
     if (regex.test(hex)) {
       updateContactColor(hex, index);

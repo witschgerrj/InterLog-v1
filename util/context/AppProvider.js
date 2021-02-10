@@ -97,7 +97,8 @@ export default AppProvider = ({children}) => {
     FB_deleteContact,
     FB_deleteContactFromArchive,
     FB_updateContactColors,
-    FB_updateLang
+    FB_updateLang,
+    FB_timestamp
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

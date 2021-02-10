@@ -23,9 +23,10 @@ export default Contacts = ({navigation, route: {params}}) => {
     updateContacts,
     contacts,
     getUID,
-    FB_createContact,
     deviceWidth,
     lang,
+    FB_timestamp,
+    FB_createContact,
   } = useContext(AppContext);
   const {
     contact,
@@ -65,7 +66,8 @@ export default Contacts = ({navigation, route: {params}}) => {
       //update contact in firebase using the doc id
       FB_createContact(id, newContact);
       //update contact within context
-      contacts.push({...newContact, id});
+      contacts.push({...newContact, id, last_updated: FB_timestamp()});
+      console.log({contacts})
       updateContacts(contacts);
     }
     navigation.navigate('Contacts', {

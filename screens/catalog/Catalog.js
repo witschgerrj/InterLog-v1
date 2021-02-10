@@ -5,7 +5,6 @@ import Grid from '../../assets/grid.png';
 import Add from '../../assets/add.png';
 import GridBox from './components/GridBox';
 import {AppContext} from '../../util/context/AppProvider';
-import {set} from 'react-native-reanimated';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default Catalog = ({navigation}) => {

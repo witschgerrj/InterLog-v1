@@ -35,4 +35,5 @@ export default es_US = {
   NAME: 'Nombre',
   EMAIL: 'Email',
   PHONE: 'Teléfono',
+  DUPLICATE_COLOR_ENTRY: 'Este color ya se ha agregado a su lista de colores.'
 }

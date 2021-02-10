@@ -25,6 +25,7 @@ export default Contacts = ({navigation, route: {params}}) => {
     deviceWidth,
     FB_updateContact,
     lang,
+    FB_timestamp
   } = useContext(AppContext);
   const {
     contactIndex,
@@ -70,11 +71,12 @@ export default Contacts = ({navigation, route: {params}}) => {
       const editedContact = {color, name, email, phone, notes};
 
       //update contact in firebase using the doc id
-      FB_updateContact(id, editedContact);
+      FB_updateContact(id, editedContact, true);
       //update contact within context
       let contactsCopy = [...contacts];
       contactsCopy.splice(contactIndex, 1);
-      contactsCopy.push({...editedContact, id});
+      contactsCopy.push({...editedContact, id, last_updated: FB_timestamp()});
+
       updateContacts(contactsCopy);
     }
     navigation.navigate('Contacts', {

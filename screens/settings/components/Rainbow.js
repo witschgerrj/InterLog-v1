@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {AppContext} from '../../../util/context/AppProvider';
-import {Pressable, Image, ScrollView} from 'react-native';
+import {Pressable, Image, ScrollView, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import styled from 'styled-components';
 import Flex from '../../../components/Flex';
 import Add from '../../../assets/add.png';
+import Banner from '../../../components/Banner';
 
 const Color = styled.View`
   backgroundColor: ${(props) => props.color};
@@ -28,8 +29,10 @@ export default ColorRow = ({
   editColor,
   showRainbow,
   editIndex,
+  contactColors,
 }) => {
-  const {deviceWidth} = useContext(AppContext);
+  const [duplicateBanner, setDuplicateBanner] = useState(false);
+  const {deviceWidth, lang} = useContext(AppContext);
   const {colors} = useTheme();
   const MARGIN = 16;
   const PADDING = 16;
@@ -73,34 +76,61 @@ export default ColorRow = ({
     '#FF008C',
   ];
 
+  const checkDuplicate = (color) => {
+    //if the color is already present, display banner
+    if (contactColors.includes(color)) {
+      setDuplicateBanner(true);
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <ScrollView
-      style={{
-        paddingTop: PADDING,
-        marginBottom: MARGIN,
-        backgroundColor: colors.background,
-      }}>
-      <Flex flexWrap="wrap" justifyContent="space-evenly">
-        <Pressable onPress={() => showRainbow === 'add' ? addEmpty() : editColor('', editIndex)}>
-          <Custom borderColor={colors.secondary} size={BOX_SIZE}>
-            <Flex
-              alignItems="center"
-              justifyContent="space-evenly"
-              style={{flex: 1}}>
-              <Image source={Add} style={{tintColor: colors.secondary}} />
-            </Flex>
-          </Custom>
-        </Pressable>
-        {colorList.map((color, index) => (
+    <Flex>
+      <ScrollView
+        style={{
+          paddingTop: PADDING,
+          marginBottom: MARGIN,
+          backgroundColor: colors.background,
+        }}>
+        <Flex flexWrap="wrap" justifyContent="space-evenly">
           <Pressable
             onPress={() =>
-              showRainbow === 'add' ? addColor(color) : editColor(color, editIndex)
-            }
-            key={'rainbow' + index}>
-            <Color size={BOX_SIZE} color={color} />
+              showRainbow === 'add' ? addEmpty() : editColor('', editIndex)
+            }>
+            <Custom borderColor={colors.secondary} size={BOX_SIZE}>
+              <Flex
+                alignItems="center"
+                justifyContent="space-evenly"
+                style={{flex: 1}}>
+                <Image source={Add} style={{tintColor: colors.secondary}} />
+              </Flex>
+            </Custom>
           </Pressable>
-        ))}
-      </Flex>
-    </ScrollView>
+          {colorList.map((color, index) => (
+            <Pressable
+              onPress={() => {
+                const duplicate = checkDuplicate(color);
+                !duplicate &&
+                  (showRainbow === 'add'
+                    ? addColor(color)
+                    : editColor(color, editIndex));
+              }}
+              key={'rainbow' + index}>
+              <Color size={BOX_SIZE} color={color} />
+            </Pressable>
+          ))}
+        </Flex>
+      </ScrollView>
+      {
+        duplicateBanner && (
+          <Banner
+            text={lang.DUPLICATE_COLOR_ENTRY}
+            onPress={() => setDuplicateBanner(false)}
+            style={{position: 'absolute', bottom: 0, width: '100%'}}
+          />
+        )
+      }
+    </Flex>
   );
 };
