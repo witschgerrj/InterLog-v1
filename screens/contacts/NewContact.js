@@ -18,7 +18,7 @@ const ColorIndicator = styled.View`
   marginLeft: 16px;
 `;
 
-export default Contacts = ({navigation, route: {params}}) => {
+export default NewContact = ({navigation, route: {params}}) => {
   const {
     updateContacts,
     contacts,

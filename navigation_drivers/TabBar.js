@@ -4,7 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import contactsStack from './stacks/ContactsStack';
 import catalogStack from './stacks/CatalogStack';
 import unselected from '../assets/unselected.png';
-import selected from '../assets/selected.png';
+import contactsUnselected from '../assets/contacts-unselected.png';
+import contactsSelected from '../assets/contacts-selected.png';
+import catalogUnselected from '../assets/catalog-unselected.png';
+import catalogSelected from '../assets/catalog-selected.png';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,9 +27,9 @@ export default TabBar = () => {
         options={{
           tabBarIcon: ({focused}) => {
             if (focused) {
-              return <Image source={selected}/>;
+              return <Image source={contactsSelected}/>;
             }
-            return <Image source={unselected}/>;
+            return <Image source={contactsUnselected}/>;
           }
         }}/>
       <Tab.Screen 
@@ -35,9 +38,9 @@ export default TabBar = () => {
         options={{
           tabBarIcon: ({focused}) => {
             if (focused) {
-              return <Image source={selected}/>;
+              return <Image source={catalogSelected}/>;
             }
-            return <Image source={unselected}/>;
+            return <Image source={catalogUnselected}/>;
           }
         }}/>
     </Tab.Navigator>

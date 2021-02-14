@@ -18,7 +18,7 @@ const ColorIndicator = styled.View`
   marginLeft: 16px;
 `;
 
-export default Contacts = ({navigation, route: {params}}) => {
+export default ViewContact = ({navigation, route: {params}}) => {
   const {
     contacts,
     updateContacts,
@@ -79,9 +79,7 @@ export default Contacts = ({navigation, route: {params}}) => {
 
       updateContacts(contactsCopy);
     }
-    navigation.navigate('Contacts', {
-      contacts,
-    });
+    navigation.navigate('Contacts');
   };
 
   useLayoutEffect(() => {

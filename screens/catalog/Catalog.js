@@ -1,11 +1,11 @@
 import React, {useContext, useLayoutEffect, useState} from 'react';
-import {Text, Pressable} from 'react-native';
+import {AppContext} from '../../util/context/AppProvider';
+import {ScrollView} from 'react-native';
 import HeaderIcon from '../../components/HeaderIcon';
 import Grid from '../../assets/grid.png';
 import Add from '../../assets/add.png';
-import GridBox from './components/GridBox';
-import {AppContext} from '../../util/context/AppProvider';
-import { ScrollView } from 'react-native-gesture-handler';
+import Item from './components/Item';
+
 
 export default Catalog = ({navigation}) => {
   const {catalog, deviceWidth} = useContext(AppContext);
@@ -14,8 +14,10 @@ export default Catalog = ({navigation}) => {
   const GRID_WIDTH_LIST = [2, 3, 4];
   const GRID_WIDTH = GRID_WIDTH_LIST[gridWidthIndex];
   const HEADER_SPACING = 16;
-  const PADDING = 16;
-  const BOX_SIZE = (deviceWidth - PADDING * (GRID_WIDTH + 1)) / GRID_WIDTH;
+  const PADDING = 8;
+  const BOX_SIZE = Math.floor(
+    (deviceWidth - PADDING * (GRID_WIDTH + 1)) / GRID_WIDTH,
+  );
 
   const cylceGridWidth = () => {
     if (gridWidthIndex === GRID_WIDTH_LIST.length - 1) {
@@ -46,12 +48,12 @@ export default Catalog = ({navigation}) => {
   return (
     <ScrollView>
       <Flex flexWrap="wrap" style={{paddingLeft: PADDING}}>
-        {catalog.map((item) => (
-          <GridBox
+        {catalog.map((item, index) => (
+          <Item
             size={BOX_SIZE}
-            name={item.name}
-            source={item.source} 
-            style={{marginRight: PADDING, marginTop: PADDING, borderRadius: 4}}
+            item={item}
+            navigation={navigation}
+            key={'item' + index}
           />
         ))}
       </Flex>

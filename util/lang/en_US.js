@@ -4,7 +4,7 @@ export default en_US = {
     DAY_AGO: 'day ago',
     DAYS_AGO: 'days ago',
     HOUR_AGO: 'hour ago',
-    HOURS_AGO: 'hour ago',
+    HOURS_AGO: 'hours ago',
     MINUTE_AGO: 'minute ago',
     MINUTES_AGO: 'minutes ago',
     MOMENTS_AGO: 'moments ago'
@@ -13,6 +13,7 @@ export default en_US = {
     CATALOG: 'Catalog',
     CONTACTS: 'Contacts',
     VIEW_CONTACT: 'View Contact',
+    VIEW_ITEM: 'View Item',
     NEW_CONTACT: 'New Contact',
     NOTES: 'Notes',
     SETTINGS: 'Settings',

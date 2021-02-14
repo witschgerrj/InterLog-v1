@@ -71,7 +71,9 @@ export const FB_updateContact = (id, contact, updateTimestamp) => {
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .doc(id)
-    .update({contact});
+    .update({
+      ...contact
+    });
 };
 
 export const FB_createContact = (id, contact) => {
