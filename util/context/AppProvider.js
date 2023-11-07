@@ -8,7 +8,7 @@ import {
   FB_deleteContact,
   FB_deleteContactFromArchive,
   FB_updateContactColors,
-  FB_updateLang
+  FB_updateLang,
 } from '../google/Firestore';
 import 'react-native-get-random-values';
 import languages from '../lang/languages';
@@ -98,7 +98,7 @@ export default AppProvider = ({children}) => {
     FB_deleteContactFromArchive,
     FB_updateContactColors,
     FB_updateLang,
-    FB_timestamp
+    FB_timestamp,
   };
 
   return <AppContext.Provider value={app_data}>{children}</AppContext.Provider>;

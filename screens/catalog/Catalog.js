@@ -4,8 +4,8 @@ import {ScrollView} from 'react-native';
 import HeaderIcon from '../../components/HeaderIcon';
 import Grid from '../../assets/grid.png';
 import Add from '../../assets/add.png';
+import Layers from '../../assets/layers.png';
 import Item from './components/Item';
-
 
 export default Catalog = ({navigation}) => {
   const {catalog, deviceWidth} = useContext(AppContext);
@@ -38,7 +38,12 @@ export default Catalog = ({navigation}) => {
           />
         ),
         headerRight: () => (
-          <HeaderIcon source={Add} style={{marginRight: HEADER_SPACING}} />
+          <Flex
+            justifyContent="space-between"
+            style={{width: 80, marginRight: HEADER_SPACING}}>
+            <HeaderIcon source={Layers} />
+            <HeaderIcon source={Add} />
+          </Flex>
         ),
       },
       [navigation],
