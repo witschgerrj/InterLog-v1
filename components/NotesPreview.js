@@ -1,15 +1,35 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {ScrollView, Image, View, Pressable} from 'react-native';
+import {useRoute, useTheme} from '@react-navigation/native';
+import {AppContext} from '../util/context/AppProvider';
 import S_Text from './S_Text';
 import NotesIcon from '../assets/write-notes.png';
-import {useRoute, useTheme} from '@react-navigation/native';
 
-export default NotesPreview = ({children, navigation}) => {
-  const {colors} = useTheme();
+export default NotesPreview = (props) => {
+  const {children, navigation, fromScreen, contact, item} = props;
+  const {lang} = useContext(AppContext);
+  const {colors} = useTheme()
   const {params} = useRoute();
-  const {contact} = params;
 
   const PADDING = 16;
+
+  const activeNotes = () => {
+    if (contact) return contact.notes;
+    if (item) return item.notes;
+  };
+
+  const notes = activeNotes();
+
+  const displayNotes = () => {
+    if (notes === '') {
+      return (
+        <S_Text color="secondary">
+          {`${lang.EMPTY.NO_NOTES_AVAILABLE}\n\n${lang.EMPTY.NO_NOTES_INSTRUCTIONS}`}
+        </S_Text>
+      );
+    }
+    return <S_Text>{notes}</S_Text>;
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -20,11 +40,17 @@ export default NotesPreview = ({children, navigation}) => {
           paddingHorizontal: PADDING,
           paddingTop: PADDING,
         }}>
-        <S_Text>{contact.notes}</S_Text>
+        {displayNotes()}
       </ScrollView>
-      <Pressable onPress={() => navigation.navigate('Notes', {
-        ...params
-      })}>
+      <Pressable
+        onPress={() =>
+          navigation.navigate('Notes', {
+            ...params,
+            fromScreen,
+            contact,
+            item
+          })
+        }>
         <Image
           source={NotesIcon}
           style={{

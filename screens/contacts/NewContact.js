@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  createContext,
-  useState,
-  useLayoutEffect,
-} from 'react';
+import React, {useContext, useState, useLayoutEffect} from 'react';
 import {View, Pressable, Image} from 'react-native';
 import {AppContext} from '../../util/context/AppProvider';
 import Flex from '../../components/Flex';
@@ -23,25 +18,29 @@ const ColorIndicator = styled.View`
   marginLeft: 16px;
 `;
 
-export default Contacts = ({navigation, route: {params}}) => {
+export default NewContact = ({navigation, route: {params}}) => {
   const {
+    updateContacts,
     contacts,
-    setContacts,
+    getUID,
     deviceWidth,
-    deviceHeight,
-    groupColors,
-    getUID
+    lang,
+    FB_timestamp,
+    FB_createContact,
   } = useContext(AppContext);
-  const {contactIndex, contact} = params;
+  const {
+    contact,
+    contact: {notes},
+  } = params;
 
-  const [color, setColor] = useState(contact.color);
   const [name, setName] = useState(contact.name);
   const [email, setEmail] = useState(contact.email);
   const [phone, setPhone] = useState(contact.phone);
-  const [notes, setNotes] = useState(contact.notes);
+  const [color, setColor] = useState(contact.color);
   const [showColors, setShowColors] = useState(false);
 
   const PADDING = 16;
+  const HEADER_SPACING = 16;
   const ROW_HEIGHT = 80;
   const BOX_SIZE = 64;
   const MARGIN_BOTTOM = 6;
@@ -52,42 +51,51 @@ export default Contacts = ({navigation, route: {params}}) => {
       setShowColors(false);
     }
   };
-
-  const validateChanges = () => {
-    if (color !== contact.color) return true;
-    if (name !== contact.name) return true;
-    if (email !== contact.email) return true;
-    if (phone !== contact.phone) return true;
-    if (notes !== contact.notes) return true;
-
+  const validateContact = () => {
+    if (name !== '') return true;
     return false;
   };
 
-  const updateAndNavigate = () => {
-    const validate = validateChanges();
+  const createAndNavigate = () => {
+    const validate = validateContact();
 
     if (validate) {
-      // const UID = getUID();
-      // console.log({UID})
-      const editedContact = { color, name, email, phone, notes }
+      const id = getUID();
+      const newContact = {color, name, email, phone, notes};
+
       //update contact in firebase using the doc id
-      
+      FB_createContact(id, newContact);
       //update contact within context
-      //needs a uid
-      // contacts.splice(contactIndex, 1);
-      // contacts.push(editedContact);
+      contacts.push({...newContact, id, last_updated: FB_timestamp()});
+      console.log({contacts})
+      updateContacts(contacts);
     }
-    //navigation.navigate('Contacts');
+    navigation.navigate('Contacts', {
+      contacts,
+    });
   };
 
   useLayoutEffect(() => {
     navigation.setOptions(
       {
         headerLeft: () => (
-          <Pressable onPress={() => updateAndNavigate()}>
-            <Image source={BackIcon} style={{marginLeft: PADDING}} />
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image source={BackIcon} style={{marginLeft: HEADER_SPACING}} />
           </Pressable>
         ),
+        headerRight: () =>
+          validateContact() && (
+            <Pressable onPress={() => createAndNavigate()}>
+              <S_Text
+                color="link"
+                style={{
+                  marginRight: HEADER_SPACING,
+                  fontWeight: 'bold',
+                }}>
+                {lang.SAVE}
+              </S_Text>
+            </Pressable>
+          ),
       },
       [navigation],
     );
@@ -102,11 +110,12 @@ export default Contacts = ({navigation, route: {params}}) => {
           <S_Text
             color="link"
             style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-            Name
+            {lang.NAME}
           </S_Text>
           <Input
             value={name}
-            placeholder="First Last"
+            placeholder="First and Last"
+            autoCapitalize="words"
             onChange={setName}
             style={{width: nameWidth}}
             maxLength={50}
@@ -121,7 +130,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Email
+          {lang.EMAIL}
         </S_Text>
         <Input
           value={email}
@@ -140,7 +149,7 @@ export default Contacts = ({navigation, route: {params}}) => {
         <S_Text
           color="link"
           style={{fontWeight: 'bold', marginBottom: MARGIN_BOTTOM}}>
-          Phone
+          {lang.PHONE}
         </S_Text>
         <Input
           value={phone}
@@ -150,7 +159,10 @@ export default Contacts = ({navigation, route: {params}}) => {
           onFocus={() => hideColors()}
         />
       </View>
-      <NotesPreview navigation={navigation}>
+      <NotesPreview
+        navigation={navigation}
+        fromScreen="NewContact"
+        contact={{color, name, email, phone, notes}}>
         {showColors ? (
           <ColorPicker
             setColor={setColor}

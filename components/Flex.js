@@ -10,17 +10,19 @@ const S_View = styled.View`
 `;
 
 export default Flex = ({
-  children,
   flexDirection,
   justifyContent,
-  style,
   flexWrap,
+  alignItems,
+  style,
+  children,
 }) => {
   return (
     <S_View
       flexDirection={flexDirection}
       justifyContent={justifyContent}
       flexWrap={flexWrap}
+      alignItems={alignItems}
       style={{...style}}>
       {children}
     </S_View>
@@ -30,6 +32,6 @@ export default Flex = ({
 Flex.defaultProps = {
   flexDirection: 'row',
   justifyContent: 'flex-start',
-  width: '100%',
   flexWrap: 'nowrap',
+  alignItems: 'stretch'
 };

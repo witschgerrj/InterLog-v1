@@ -1,6 +1,7 @@
 //row for contact
-import React from 'react';
-import {Image} from 'react-native';
+import React, {useContext} from 'react';
+import {AppContext} from '../../../util/context/AppProvider';
+import {Image, Pressable} from 'react-native';
 import styled from 'styled-components';
 import S_Text from '../../../components/S_Text';
 import Row from '../../../components/Row';
@@ -16,20 +17,53 @@ const Color = styled.View`
   marginRight: 16px;
 `;
 
-export default Contact = ({name, updated, color}) => {
+export default Contact = (props) => {
+  const {
+    navigation,
+    archiving,
+    contactIndex,
+    archiveContact,
+    contact,
+  } = props;
+
+  const { name, last_updated, color } = contact;
+  const {formattedTime, lang} = useContext(AppContext);
+  const timestamp = formattedTime(last_updated);
+
+  const navigateViewContact = () => {
+    navigation.navigate('ViewContact', {
+      contactIndex,
+      contact,
+    });
+  };
+
   return (
     <Row>
       <Flex justifyContent="space-between">
-        <Flex style={{width: '80%'}}>
-          <Color color={color} />
-          <Flex flexDirection="column">
+        <Pressable onPress={() => navigateViewContact()} style={{flex: 1}}>
+          <Flex>
+            <Color color={color} />
+            <Flex flexDirection="column">
               <S_Text>{name}</S_Text>
-              <Padding pt='10'>
-                <S_Text color='secondary'>{updated}</S_Text>
+              <Padding pt="10">
+                <S_Text color="secondary">{timestamp}</S_Text>
               </Padding>
+            </Flex>
           </Flex>
-        </Flex>
-        <Image source={Info} style={{marginTop: 16}}/>
+        </Pressable>
+        {!archiving ? (
+          <Flex alignItems="center">
+            <Image source={Info}/>
+          </Flex>
+        ) : (
+          <Pressable onPress={() => archiveContact(contact, contactIndex)}>
+            <Flex alignItems="center" style={{height: '100%'}}>
+              <S_Text color="error" fontWeight="bold">
+                {lang.ARCHIVE}
+              </S_Text>
+            </Flex>
+          </Pressable>
+        )}
       </Flex>
     </Row>
   );

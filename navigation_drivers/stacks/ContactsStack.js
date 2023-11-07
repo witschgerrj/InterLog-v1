@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import {AppContext} from '../../util/context/AppProvider';
 import Contacts from '../../screens/contacts/Contacts';
-import ContactView from '../../screens/contacts/ContactView';
+import ViewContact from '../../screens/contacts/ViewContact';
+import NewContact from '../../screens/contacts/NewContact';
 import Notes from '../../screens/Notes';
+import Settings from '../../screens/settings/Settings';
+import ContactArchive from '../../screens/settings/ContactArchive';
+import ContactColors from '../../screens/settings/ContactColors';
+import Language from '../../screens/settings/Language';
 
 const Stack = createStackNavigator();
 
 export default contacts_stack = () => {
+  const {lang} = useContext(AppContext);
+
   return (
     <Stack.Navigator 
       initialRouteName={'Contacts'}
@@ -15,19 +23,40 @@ export default contacts_stack = () => {
           fontSize: 22,
         },
         headerBackTitleVisible: false,
+        headerLeft: null,
       }}>
       <Stack.Screen 
         name='Contacts'
         component={Contacts}
-        options={{title: 'Contacts'}}/>
+        options={{title: lang.HEADER.CONTACTS}}/>
       <Stack.Screen 
-        name='ContactView'
-        component={ContactView}
-        options={{title: 'View Contact'}}/>
+        name='ViewContact'
+        component={ViewContact}
+        options={{title: lang.HEADER.VIEW_CONTACT}}/>
       <Stack.Screen 
-      name='Notes'
-      component={Notes}
-      options={{title: 'Notes'}}/>
+        name='NewContact'
+        component={NewContact}
+        options={{title: lang.HEADER.NEW_CONTACT}}/>
+      <Stack.Screen 
+        name='Notes'
+        component={Notes}
+        options={{title: lang.HEADER.NOTES}}/>
+      <Stack.Screen 
+        name='Settings'
+        component={Settings}
+        options={{title: lang.HEADER.SETTINGS}}/>
+      <Stack.Screen 
+        name='ContactArchive'
+        component={ContactArchive}
+        options={{title: lang.HEADER.CONTACT_ARCHIVE}}/>
+      <Stack.Screen 
+        name='ContactColors'
+        component={ContactColors}
+        options={{title: lang.HEADER.CONTACT_COLORS}}/>
+      <Stack.Screen 
+        name='Language'
+        component={Language}
+        options={{title: lang.HEADER.LANGUAGE}}/>
     </Stack.Navigator>
   );
 }

@@ -6,28 +6,125 @@ const Firebase = firebase.initializeApp(firebase_config);
 const db = firebase.firestore();
 //firebase.analytics();
 
-export const getContacts = async () => {
+export const FB_timestamp = () => {
+  return firebase.firestore.Timestamp.now().seconds;
+};
+
+export const FB_getContactArchive = async () => {
+  const snapshot = await db
+    .collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .get();
+
+  return snapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
+};
+
+export const FB_archiveContact = (id, contact) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .doc(id)
+    .set({
+      ...contact,
+      last_updated: FB_timestamp(),
+    });
+};
+
+export const FB_deleteContactFromArchive = (id) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('ContactArchive')
+    .doc(id)
+    .delete();
+};
+
+export const FB_getContacts = async () => {
   const snapshot = await db
     .collection('Users')
     .doc('WNJWWElZUACGPoSc8w6l')
     .collection('Contacts')
     .get();
-    
-  return snapshot.docs.map(doc => {
+
+  return snapshot.docs.map((doc) => {
     return {
       ...doc.data(),
-      id: doc.id
-    }
-  })
-} 
+      id: doc.id,
+    };
+  });
+};
 
-export const mock_group_colors = [
-  '#363636',
-  '#FCFC57',
-  '#FF5F5F',
-  '#FF6CF4',
-  '#DBDBDB',
-  '#5CD9FF',
-  '#5FFF71',
-  '#9262FF',
-];
+export const FB_updateContact = (id, contact, updateTimestamp) => {
+  contact = updateTimestamp
+    ? {
+        ...contact,
+        last_updated: FB_timestamp(),
+      }
+    : contact;
+
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .update({
+      ...contact
+    });
+};
+
+export const FB_createContact = (id, contact) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .set({
+      ...contact,
+      last_updated: FB_timestamp(),
+    });
+};
+
+export const FB_deleteContact = (id) => {
+  db.collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Contacts')
+    .doc(id)
+    .delete();
+};
+
+export const FB_getCatalog = async () => {
+  const snapshot = await db
+    .collection('Users')
+    .doc('WNJWWElZUACGPoSc8w6l')
+    .collection('Catalog')
+    .get();
+
+  return snapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
+};
+
+//there is only a single doc in Users so a map is not returned
+export const FB_getUserPreferenceData = async () => {
+  const doc = await db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').get();
+
+  return doc.data();
+};
+
+export const FB_updateContactColors = (contactColors) => {
+  db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').update({
+    contact_colors: contactColors,
+  });
+};
+
+export const FB_updateLang = (langCode) => {
+  db.collection('Users').doc('WNJWWElZUACGPoSc8w6l').update({
+    lang: langCode,
+  });
+};

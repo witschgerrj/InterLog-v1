@@ -14,7 +14,7 @@ const ColorBox = styled.View`
 `;
 
 export default ColorPicker = ({activeColor, setColor, BOX_SIZE}) => {
-  const {deviceWidth, groupColors} = useContext(AppContext);
+  const {deviceWidth, contactColors} = useContext(AppContext);
   const {colors} = useTheme();
 
   const PADDING = 16;
@@ -30,9 +30,9 @@ export default ColorPicker = ({activeColor, setColor, BOX_SIZE}) => {
         maxHeight: MAX_HEIGHT,
       }}>
       <Flex
-        flexWrap="wrap"
+        flexWrap="wrap-reverse"
         style={{paddingTop: PADDING}}>
-        {groupColors.map((color, index) => (
+        {contactColors.map((color, index) => (
           <Pressable
             onPress={() => setColor(color)}
             key={'ColorPicker' + index}>
@@ -40,7 +40,7 @@ export default ColorPicker = ({activeColor, setColor, BOX_SIZE}) => {
               size={SIZE}
               color={color}
               style={{
-                marginBottom: PADDING,
+                marginTop: PADDING,
                 marginLeft: PADDING,
                 borderWidth: 4,
                 borderStyle: 'solid',

@@ -11,6 +11,6 @@ export default theme = {
     error: '#ff5f5f',
   },
   fontSize: {
-    md: 18
-  }
+    md: 18,
+  },
 };

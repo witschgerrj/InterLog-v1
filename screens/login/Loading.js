@@ -1,41 +1,53 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {AppContext} from '../../util/context/AppProvider';
+import {
+  FB_getContactArchive,
+  FB_getContacts,
+  FB_getUserPreferenceData,
+  FB_getCatalog,
+} from '../../util/google/Firestore';
 import {Text} from 'react-native';
 import Tab_Bar from '../../navigation_drivers/TabBar';
-import English from '../../util/language/English';
-import {getContacts, mock_group_colors} from '../../util/google/Firestore';
 import S_SafeAreaView from '../../components/S_SafeAreaView';
+import languages from '../../util/lang/languages';
 
 export default Loading = ({}) => {
   const [loaded, setLoaded] = useState(false);
   const {
+    setContactArchive,
     setLang,
-    setContacts,
+    setLangCode,
+    updateContacts,
     setCatalog,
     setTheme,
-    setGroupColors
+    setContactColors,
   } = useContext(AppContext);
 
   const firebaseData = async () => {
-    const firebaseContacts = await getContacts();
-    console.log({firebaseContacts})
-    setContacts(firebaseContacts);
+    const firebaseContacts = await FB_getContacts();
+    const firebaseContactArchive = await FB_getContactArchive();
+    const firebaseUserPreferenceData = await FB_getUserPreferenceData();
+    const firebaseCatalog = await FB_getCatalog();
+    const {contact_colors, lang} = firebaseUserPreferenceData;
+    updateContacts(firebaseContacts);
+    setCatalog(firebaseCatalog);
+    setContactArchive(firebaseContactArchive);
+    setContactColors(contact_colors);
+    setLang(languages[lang]);
+    setLangCode(lang);
   };
 
   const asyncData = () => {
-    setLang(English);
     setCatalog([]);
     setTheme('dark');
-    setGroupColors(mock_group_colors);
-  }
+  };
 
-  useEffect(() => { 
+  useEffect(() => {
     asyncData();
 
-    firebaseData()
-    .then(() => {
-      setLoaded(true)
-    })
+    firebaseData().then(() => {
+      setLoaded(true);
+    });
   }, []);
 
   return (
